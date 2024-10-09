@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "name": "rails",
+      "path": "server",
+    },
+    {
+      "name": "angular",
+      "path": "frontend",
+    },
+    {
+      "name": "react_native",
+      "path": "mobile",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "frontend": true,
+    },
+  },
+}
