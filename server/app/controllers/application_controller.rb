@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include JwtToken
+  include Pagy::Backend
 
   before_action :autenticar_usuario
 

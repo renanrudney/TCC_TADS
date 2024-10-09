@@ -4,9 +4,10 @@ class HitpointResultadosController < ApplicationController
 
   # GET /hitpoint_resultados
   def index
-    @hitpoint_resultados = HitpointResultado.all
+    resultados = HitpointResultado.all
 
-    render json: @hitpoint_resultados
+    @pagy, @records = pagy(resultados)
+    render json: { records: @records, meta: pagy_metadata(@pagy) }, status: :ok
   end
 
   # GET /hitpoint_resultados/1
