@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   post "login", to: "autenticacao#login"
   resources :usuarios
+  resources :resultados, only: :index
   resources :hitpoint_resultados
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
