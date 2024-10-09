@@ -1,0 +1,2 @@
+class HitpointResultado < ApplicationRecord
+end
