@@ -30,9 +30,10 @@ frontend/yarn-error.log*
 mobile/node_modules/
 
 # Expo
-mobile/mobile/.expo/
+mobile/.expo/
 dist/
 mobile/web-build/
+mobile/%ProgramData%/
 
 # Native
 mobile/*.orig.*
@@ -61,6 +62,30 @@ mobile/.env*.local
 mobile/*.tsbuildinfo
 
 # server
+# Ignore bundler config.
+server/.bundle
 
-# npm
-server/node_modules/
+# Ignore all environment files (except templates).
+server/.env*
+!server/.env*.erb
+
+# Ignore all logfiles and tempfiles.
+server/log/*
+server/tmp/*
+!server/log/.keep
+!server/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+server/tmp/pids/*
+!server/tmp/pids/
+!server/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+server/storage/*
+!server/storage/.keep
+server/tmp/storage/*
+!server/tmp/storage/
+!server/tmp/storage/.keep
+
+# Ignore master key for decrypting credentials and more.
+server/config/master.key
