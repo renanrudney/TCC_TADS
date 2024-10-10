@@ -2,8 +2,11 @@ class Usuario::Base < ApplicationRecord
   self.table_name = "usuario"
   has_secure_password :senha, validations: false
 
-  has_one :comum, class_name: "Usuario::Comum", foreign_key: :usuario_id
-  has_one :profissional, class_name: "Usuario::Profissional", foreign_key: :usuario_id
+  before_create :check_role
+
+  has_one :comum, class_name: "Usuario::Comum", foreign_key: :usuario_id, dependent: :destroy
+  has_one :profissional, class_name: "Usuario::Profissional", foreign_key: :usuario_id, dependent: :destroy
+  has_one :admin, class_name: "Usuario::Admin", foreign_key: :usuario_id, dependent: :destroy
 
   validates :cpf, presence: true, uniqueness: true
   validates :nome, presence: true
@@ -13,5 +16,19 @@ class Usuario::Base < ApplicationRecord
   accepts_nested_attributes_for :comum, allow_destroy: true
   accepts_nested_attributes_for :profissional, allow_destroy: true
 
-  enum :tipo, { comum: 0, profissional: 1 }
+  enum :tipo, { comum: 0, profissional: 1, admin: 2 }
+
+  private
+
+  def check_role
+    case tipo&.to_sym
+    when :admin
+      self.admin = Usuario::Admin.new
+    when :profissional
+      self.profissional ||= Usuario::Profissional.new
+    else
+      self.comum ||= Usuario::Comum.new
+      self.tipo ||= :comum
+    end
+  end
 end

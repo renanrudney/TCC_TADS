@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_09_224212) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_10_013447) do
+  create_table "admin", force: :cascade do |t|
+    t.integer "usuario_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["usuario_id"], name: "index_admin_on_usuario_id", unique: true
+  end
+
   create_table "resultado_hitpoint", force: :cascade do |t|
     t.integer "qtd_toque"
     t.integer "intervalo_toque"
