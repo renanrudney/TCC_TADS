@@ -2,7 +2,6 @@ class RegistroController < ApplicationController
   skip_before_action :autenticar_usuario
 
   def create
-
     @usuario = Usuario::Base.new(create_params)
     if @usuario.save
       render json: { status: :created }, status: :created
