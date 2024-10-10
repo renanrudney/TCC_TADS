@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   post "login", to: "autenticacao#login"
   post "registro", to: "registro#create"
 
-  resources :usuarios
+  resources :profissionais
   resources :resultados, only: :index
   resources :hitpoint_resultados
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
