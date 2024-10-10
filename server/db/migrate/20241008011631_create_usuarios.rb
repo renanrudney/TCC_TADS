@@ -1,6 +1,6 @@
 class CreateUsuarios < ActiveRecord::Migration[7.2]
   def change
-    create_table :usuarios do |t|
+    create_table :usuario do |t|
       t.string :cpf, limit: 11, index: { unique: true }
       t.string :nome
       t.string :sobrenome

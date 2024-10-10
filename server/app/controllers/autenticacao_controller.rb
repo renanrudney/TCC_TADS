@@ -3,7 +3,7 @@ class AutenticacaoController < ApplicationController
 
   # POST /login
   def login
-    @usuario = Usuario.find_by_login(params[:login])
+    @usuario = Usuario::Base.find_by_login(params[:login])
     if @usuario&.authenticate_senha(params[:senha])
       token = JwtToken.encode({ usuario_id: @usuario.id })
       time = Time.now + 7.days.to_i
