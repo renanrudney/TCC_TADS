@@ -10,12 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_10_013447) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
+  create_table "accelerometers", force: :cascade do |t|
+    t.decimal "x_axis", precision: 30, scale: 25
+    t.decimal "y_axis", precision: 30, scale: 25
+    t.decimal "z_axis", precision: 30, scale: 25
+    t.datetime "realizado"
+    t.integer "reference_id"
+    t.string "reference_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reference_id"], name: "index_accelerometers_on_reference_id"
+    t.index ["reference_type", "reference_id"], name: "index_accelerometers_on_reference_type_and_reference_id"
+  end
+
   create_table "admin", force: :cascade do |t|
     t.integer "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_admin_on_usuario_id", unique: true
+  end
+
+  create_table "gyroscopes", force: :cascade do |t|
+    t.decimal "x_axis", precision: 30, scale: 25
+    t.decimal "y_axis", precision: 30, scale: 25
+    t.decimal "z_axis", precision: 30, scale: 25
+    t.datetime "realizado"
+    t.integer "reference_id"
+    t.string "reference_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reference_id"], name: "index_gyroscopes_on_reference_id"
+    t.index ["reference_type", "reference_id"], name: "index_gyroscopes_on_reference_type_and_reference_id"
+  end
+
+  create_table "resultado_heelrise", force: :cascade do |t|
+    t.datetime "realizado"
+    t.integer "usuario_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["usuario_id"], name: "index_resultado_heelrise_on_usuario_id"
   end
 
   create_table "resultado_hitpoint", force: :cascade do |t|
@@ -26,6 +60,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_10_013447) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_resultado_hitpoint_on_usuario_id"
+  end
+
+  create_table "resultado_updownarm", force: :cascade do |t|
+    t.datetime "realizado"
+    t.integer "usuario_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["usuario_id"], name: "index_resultado_updownarm_on_usuario_id"
   end
 
   create_table "usu_comum", force: :cascade do |t|

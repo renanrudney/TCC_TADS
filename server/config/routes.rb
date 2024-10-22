@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :profissionais
   resources :resultados, only: :index
   resources :hitpoint_resultados
+  resources :heel_rise_resultados
+  resources :up_down_arm_resultados
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

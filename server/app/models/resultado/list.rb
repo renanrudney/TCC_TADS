@@ -26,8 +26,13 @@ class Resultado::List
 
   def self.call
     resultados = []
-    ::HitpointResultado.all.each do |hr|
-      attributes = hr.attributes.merge(type: :hitpoint)
+    ::HitpointResultado.all.each do |hp|
+      attributes = hp.attributes.merge(type: :hitpoint)
+      resultados << Item.new(attributes)
+    end
+    ::UpDownArmResultado.all.each do |ud|
+      attributes = ud.attributes.merge(type: :up_down_arm)
+      attributes = attributes.merge(accelerometers: ud.accelerometers, gyroscopes: ud.gyroscopes)
       resultados << Item.new(attributes)
     end
     resultados
