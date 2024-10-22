@@ -7,7 +7,7 @@ class HitpointResultadosController < ApplicationController
     resultados = HitpointResultado.all
 
     @pagy, @records = pagy(resultados)
-    render json: { records: @records, meta: pagy_metadata(@pagy) }, status: :ok
+    render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: HitpointResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
   end
 
   # GET /hitpoint_resultados/1
