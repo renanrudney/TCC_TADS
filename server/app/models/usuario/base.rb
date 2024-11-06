@@ -7,6 +7,9 @@ class Usuario::Base < ApplicationRecord
   has_one :comum, class_name: "Usuario::Comum", foreign_key: :usuario_id, dependent: :destroy
   has_one :profissional, class_name: "Usuario::Profissional", foreign_key: :usuario_id, dependent: :destroy
   has_one :admin, class_name: "Usuario::Admin", foreign_key: :usuario_id, dependent: :destroy
+  has_many :resultado_hitpoint, class_name: "HitpointResultado", foreign_key: :usuario_id, dependent: :destroy
+  has_many :resultado_heel_rise, class_name: "HeelRiseResultado", foreign_key: :usuario_id, dependent: :destroy
+  has_many :resultado_up_down_arm, class_name: "UpDownArmResultado", foreign_key: :usuario_id, dependent: :destroy
 
   validates :cpf, presence: true, uniqueness: true
   validates :nome, presence: true

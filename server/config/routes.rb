@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "registro", to: "registro#show"
   post "registro", to: "registro#create"
   put "registro", to: "registro#update"
+  delete "registro", to: "registro#destroy"
 
   resources :profissionais
   resources :resultados, only: :index

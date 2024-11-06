@@ -22,6 +22,14 @@ class RegistroController < ApplicationController
     end
   end
 
+  def destroy
+    if @usuario_atual.destroy
+      render json: {}, status: :no_content
+    else
+      render json: { errors: @usuario_atual.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def usuario_params
