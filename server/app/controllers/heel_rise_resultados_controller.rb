@@ -1,10 +1,9 @@
 class HeelRiseResultadosController < ApplicationController
-  skip_before_action :autenticar_usuario
   before_action :set_heel_rise_resultado, only: %i[ show update destroy ]
 
   # GET /heel_rise_resultados
   def index
-    resultados = HeelRiseResultado.all
+    resultados = HeelRiseResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: HeelRiseResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -43,13 +42,13 @@ class HeelRiseResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_heel_rise_resultado
-      @heel_rise_resultado = HeelRiseResultado.find(params[:id])
+      @heel_rise_resultado = HeelRiseResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
     end
 
     # Only allow a list of trusted parameters through.
     def heel_rise_resultado_params
       params.require(:resultado).permit([
         :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :realizado], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :realizado]
-      ])
+      ]).merge(usuario_id: @usuario_atual.id)
     end
 end
