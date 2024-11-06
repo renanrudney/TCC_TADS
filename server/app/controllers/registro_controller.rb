@@ -1,5 +1,9 @@
 class RegistroController < ApplicationController
-  skip_before_action :autenticar_usuario
+  skip_before_action :autenticar_usuario, only: :create
+
+  def show
+    render json: @usuario_atual, serializer: ComumSerializer
+  end
 
   def create
     @usuario = Usuario::Base.new(create_params)
@@ -7,6 +11,22 @@ class RegistroController < ApplicationController
       render json: { status: :created }, status: :created
     else
       render json: { errors: @usuario.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @usuario_atual.update(update_params)
+      render json: @usuario_atual, serializer: ComumSerializer
+    else
+      render json: { errors: @usuario_atual.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @usuario_atual.destroy
+      render json: {}, status: :no_content
+    else
+      render json: { errors: @usuario_atual.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -20,7 +40,18 @@ class RegistroController < ApplicationController
     permitted_params = usuario_params
     {
       cpf: permitted_params[:cpf], login: permitted_params[:login], senha: permitted_params[:senha],
-      nome: permitted_params[:nome], comum_attributes: {
+      nome: permitted_params[:nome], sobrenome: permitted_params[:sobrenome], nascimento: permitted_params[:nascimento],
+      comum_attributes: {
+        genero: permitted_params[:genero], nivel_sintoma: permitted_params[:nivel_sintoma]
+      }
+    }
+  end
+
+  def update_params
+    permitted_params = params.permit(:registro, :email, :nome, :sobrenome, :nascimento, :nivel_sintoma)
+    {
+      login: permitted_params[:email], nome: permitted_params[:nome], sobrenome: permitted_params[:sobrenome], 
+      nascimento: permitted_params[:nascimento], comum_attributes: {
         genero: permitted_params[:genero], nivel_sintoma: permitted_params[:nivel_sintoma]
       }
     }

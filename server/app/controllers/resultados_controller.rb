@@ -1,8 +1,6 @@
 class ResultadosController < ApplicationController
-  skip_before_action :autenticar_usuario
-
   def index
-    resultados = Resultado::List.call
+    resultados = Resultado::List.call(usuario_id: @usuario_atual.id)
     @pagy, @records = pagy_array(resultados)
     render json: { records: @records, meta: pagy_metadata(@pagy)}, status: :ok
   end

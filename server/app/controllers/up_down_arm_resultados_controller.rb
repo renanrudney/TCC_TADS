@@ -1,10 +1,9 @@
 class UpDownArmResultadosController < ApplicationController
-  skip_before_action :autenticar_usuario
   before_action :set_up_down_arm_resultado, only: %i[ show update destroy ]
 
   # GET /up_down_arm_resultados
   def index
-    resultados = UpDownArmResultado.all
+    resultados = UpDownArmResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: UpDownArmResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -43,13 +42,13 @@ class UpDownArmResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_up_down_arm_resultado
-      @up_down_arm_resultado = UpDownArmResultado.find(params[:id])
+      @up_down_arm_resultado = UpDownArmResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
     end
 
     # Only allow a list of trusted parameters through.
     def up_down_arm_resultado_params
       params.require(:resultado).permit([
         :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :realizado], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :realizado]
-      ])
+      ]).merge(usuario_id: @usuario_atual.id)
     end
 end

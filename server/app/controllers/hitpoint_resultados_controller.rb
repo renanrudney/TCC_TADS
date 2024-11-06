@@ -1,10 +1,9 @@
 class HitpointResultadosController < ApplicationController
-  skip_before_action :autenticar_usuario
   before_action :set_hitpoint_resultado, only: %i[ show update destroy ]
 
   # GET /hitpoint_resultados
   def index
-    resultados = HitpointResultado.all
+    resultados = HitpointResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: HitpointResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -43,13 +42,13 @@ class HitpointResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_hitpoint_resultado
-      @hitpoint_resultado = HitpointResultado.find(params[:id])
+      @hitpoint_resultado = HitpointResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
     end
 
     # Only allow a list of trusted parameters through.
     def hitpoint_resultado_params
       params.require(:resultado).permit([
         :qtd_toque, :intervalo_toque, :realizado
-      ])
+      ]).merge(usuario_id: @usuario_atual.id)
     end
 end

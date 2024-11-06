@@ -16,6 +16,10 @@ class Resultado::List
         case self.type
         when :hitpoint
           "/hitpoint_resultados/#{id}"
+        when :up_down_arm
+          "/up_down_arm_resultados/#{id}"
+        when :heel_rise
+          "/heel_rise_resultados/#{id}"
         end
       [{
         "rel": "self",
@@ -24,14 +28,19 @@ class Resultado::List
     end
   end
 
-  def self.call
+  def self.call(usuario_id:)
     resultados = []
-    ::HitpointResultado.all.each do |hp|
+    ::HitpointResultado.where(usuario_id: ).each do |hp|
       attributes = hp.attributes.merge(type: :hitpoint)
       resultados << Item.new(attributes)
     end
-    ::UpDownArmResultado.all.each do |ud|
+    ::UpDownArmResultado.where(usuario_id:).each do |ud|
       attributes = ud.attributes.merge(type: :up_down_arm)
+      attributes = attributes.merge(accelerometers: ud.accelerometers, gyroscopes: ud.gyroscopes)
+      resultados << Item.new(attributes)
+    end
+    ::HeelRiseResultado.where(usuario_id:).each do |ud|
+      attributes = ud.attributes.merge(type: :heel_rise)
       attributes = attributes.merge(accelerometers: ud.accelerometers, gyroscopes: ud.gyroscopes)
       resultados << Item.new(attributes)
     end
