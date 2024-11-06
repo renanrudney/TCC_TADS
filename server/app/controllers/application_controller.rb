@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
       @decoded = JwtToken.decode(header)
       @usuario_atual = Usuario::Base.find(@decoded[:usuario_id])
     rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-      render json: { errors: [ "Token inválido. Verifique suas informações de login e tente novamente." ] }, status: :unauthorized
+      return render json: { errors: [ "Token inválido. Verifique suas informações de login e tente novamente." ] }, status: :unauthorized
     end
   end
 end

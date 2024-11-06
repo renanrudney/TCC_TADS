@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   put "registro", to: "registro#update"
   delete "registro", to: "registro#destroy"
 
+  get "profissionais/registro", to: "profissionais/registro#show"
+  post "profissionais/registro", to: "profissionais/registro#create"
+  put "profissionais/registro", to: "profissionais/registro#update"
+  delete "profissionais/registro", to: "profissionais/registro#destroy"
+
   resources :profissionais
   resources :resultados, only: :index
   resources :hitpoint_resultados
