@@ -11,7 +11,7 @@ class Usuario::Base < ApplicationRecord
   validates :cpf, presence: true, uniqueness: true
   validates :nome, presence: true
   validates :login, presence: true, uniqueness: true
-  validates :senha, presence: true
+  # validates :senha, presence: true
 
   accepts_nested_attributes_for :comum, allow_destroy: true
   accepts_nested_attributes_for :profissional, allow_destroy: true

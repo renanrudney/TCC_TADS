@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   post "login", to: "autenticacao#login"
+
+  get "registro", to: "registro#show"
   post "registro", to: "registro#create"
+  put "registro", to: "registro#update"
 
   resources :profissionais
   resources :resultados, only: :index
