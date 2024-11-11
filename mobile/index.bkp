@@ -1,0 +1,136 @@
+import axios from 'axios';
+import { Accelerometer, Gyroscope } from 'expo-sensors';
+import { useEffect, useState } from 'react';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+
+
+export default function Index() {
+  const [sensorData, setSensorData] = useState({
+    accelerometer: [],
+    gyroscope: [],
+  });
+  const [collecting, setCollecting] = useState(false);
+
+  useEffect(() => {
+    if (collecting) {
+        Accelerometer.setUpdateInterval(16);
+        Gyroscope.setUpdateInterval(16);
+
+        const accelerometerSubscription = Accelerometer.addListener(accelerometerData => {
+            setSensorData(prevData => ({
+                ...prevData,
+                accelerometer: [...prevData.accelerometer, accelerometerData],
+            }));
+        });
+
+        const gyroscopeSubscription = Gyroscope.addListener(gyroscopeData => {
+            setSensorData(prevData => ({
+                ...prevData,
+                gyroscope: [...prevData.gyroscope, gyroscopeData],
+            }));
+        });
+
+        // Stop collecting after 10 seconds
+        const timer = setTimeout(() => {
+            accelerometerSubscription.remove();
+            gyroscopeSubscription.remove();
+            setCollecting(false);
+        }, 10000);
+
+        return () => {
+            accelerometerSubscription.remove();
+            gyroscopeSubscription.remove();
+            clearTimeout(timer);
+        };
+    }
+  }, [collecting]);
+
+  const startCollecting = () => {
+    setSensorData({ accelerometer: [], gyroscope: [] });
+    setCollecting(true);
+};
+
+const sendDataToServer = () => {
+    const data = {
+        realizado: new Date().toISOString(),
+        accelerometer: sensorData.accelerometer,
+        gyroscope: sensorData.gyroscope,
+    };
+
+    // const serverUrl = 'http://192.168.1.36:3000/create';
+    // const serverUrl = 'http://172.16.0.115:3000/create';
+    const serverUrl = process.env.URL_CREATE;
+
+    axios.post(serverUrl, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        console.log('Data sent to server successfully:', response.data);
+    })
+    .catch(error => {
+        if (error.response) {
+            // Server responded with a status other than 200 range
+            console.log('error.response.data', error.response.data);
+            console.log('error.response.status', error.response.status);
+            console.log('error.response.headers', error.response.headers);
+          } else if (error.request) {
+            // Request was made but no response was received
+            console.log('error.request', error.request);
+          } else {
+            // Error occurred in setting up the request
+            console.error("Error", error.message);
+          }
+    });
+  };
+
+  // return (
+  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //     <Text>
+  //       Sensors
+  //     </Text>
+  //   </View>
+  // );
+
+  return (
+      <View style={styles.container}>
+      <Text>Data Collection Status: {collecting ? "Collecting..." : "Stopped"}</Text>
+
+      <Button title="Start Collecting Data" onPress={startCollecting} />
+      <Button title="Send Data to Server" onPress={sendDataToServer} disabled={collecting || sensorData.accelerometer.length === 0} />
+
+      <Text style={styles.heading}>Accelerometer Data:</Text>
+      <FlatList
+          data={sensorData.accelerometer}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+              <Text>X: {item.x.toFixed(2)} Y: {item.y.toFixed(2)} Z: {item.z.toFixed(2)}</Text>
+          )}
+      />
+
+      <Text style={styles.heading}>Gyroscope Data:</Text>
+      <FlatList
+          data={sensorData.gyroscope}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+              <Text>X: {item.x.toFixed(2)} Y: {item.y.toFixed(2)} Z: {item.z.toFixed(2)}</Text>
+          )}
+      />
+  </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 16,
+  },
+  heading: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: 16,
+  },
+});
