@@ -19,7 +19,7 @@ class UpDownArmResultadosController < ApplicationController
     @up_down_arm_resultado = UpDownArmResultado.new(up_down_arm_resultado_params)
 
     if @up_down_arm_resultado.save
-      render json: @up_down_arm_resultado, status: :created, location: @up_down_arm_resultado
+      render json: {}, status: :created
     else
       render json: @up_down_arm_resultado.errors, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class UpDownArmResultadosController < ApplicationController
     # Only allow a list of trusted parameters through.
     def up_down_arm_resultado_params
       params.require(:resultado).permit([
-        :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :realizado], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :realizado]
+        :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :timestamp], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :timestamp]
       ]).merge(usuario_id: @usuario_atual.id)
     end
 end

@@ -19,7 +19,7 @@ class HeelRiseResultadosController < ApplicationController
     @heel_rise_resultado = HeelRiseResultado.new(heel_rise_resultado_params)
 
     if @heel_rise_resultado.save
-      render json: @heel_rise_resultado, status: :created, location: @heel_rise_resultado
+      render json: {}, status: :created
     else
       render json: @heel_rise_resultado.errors, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class HeelRiseResultadosController < ApplicationController
     # Only allow a list of trusted parameters through.
     def heel_rise_resultado_params
       params.require(:resultado).permit([
-        :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :realizado], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :realizado]
+        :realizado, accelerometers_attributes: [:x_axis, :y_axis, :z_axis, :timestamp], gyroscopes_attributes: [:x_axis, :y_axis, :z_axis, :timestamp]
       ]).merge(usuario_id: @usuario_atual.id)
     end
 end

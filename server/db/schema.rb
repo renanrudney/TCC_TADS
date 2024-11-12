@@ -15,7 +15,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
     t.decimal "x_axis", precision: 30, scale: 25
     t.decimal "y_axis", precision: 30, scale: 25
     t.decimal "z_axis", precision: 30, scale: 25
-    t.datetime "realizado"
+    t.decimal "timestamp", precision: 30, scale: 25
     t.integer "reference_id"
     t.string "reference_type"
     t.datetime "created_at", null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
     t.decimal "x_axis", precision: 30, scale: 25
     t.decimal "y_axis", precision: 30, scale: 25
     t.decimal "z_axis", precision: 30, scale: 25
-    t.datetime "realizado"
+    t.decimal "timestamp", precision: 30, scale: 25
     t.integer "reference_id"
     t.string "reference_type"
     t.datetime "created_at", null: false
