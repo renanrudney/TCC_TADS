@@ -61,7 +61,7 @@ export default function GetDataSensors() {
   const clear = () => { setAccelerometerArray([]), setGyroscopeArray([])}
 
   const formatData = (dataArray) => {
-    return dataArray.map(data => Object.assign({}, { x_axis: data.x, y_axis: data.y, z_axis: data.z, realizado: data.timestamp }))
+    return dataArray.map(data => Object.assign({}, { x_axis: data.x, y_axis: data.y, z_axis: data.z, timestamp: data.timestamp }))
   }
 
   const sendDataToServer = async (data) => {

@@ -1,9 +1,17 @@
-import { Slot } from 'expo-router';
+import { Slot, Navigator, Link, Stack } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function HistoryLayout() {
   return (
     <>
-      <Slot />
+      <Stack.Screen
+        options={{
+          title: 'Histórico de testes',
+          headerStyle: { backgroundColor: '#145a73' },
+          headerTintColor: '#fff',
+        }}
+      />
+        <Slot />
     </>
   );
 }
