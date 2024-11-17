@@ -8,7 +8,7 @@ export default function Index() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Testes disponíveis</Text>
-      <Link href="/sensors">Acessar Up Down Hand</Link>
+      <Link href="/updownhand/tutorial">Up Down Hand</Link>
       <Link href="/history">Histórico de testes</Link>
       <Text
         onPress={() => {
