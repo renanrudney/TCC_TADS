@@ -7,12 +7,12 @@ export default function Tutorial() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Neste teste você deve,{'\n'}
-        segurando o seu smartphone na mão e com o braço totalmente esticado,{'\n'}
-        fazer o movimento de subida e descida repetidas vezes por um intervalo de 10 segundos.
+        Neste teste você deve{'\n'}elevar
+        seu calcanhar{'\n'}repetidas vezes{'\n'}
+        por um intervalo de 10 segundos.
       </Text>
       <Image
-        source={require("@/assets/images/updownarm.png")}
+        source={require("@/assets/images/heelrise.png")}
         style={styles.image}
       />
       <Link style={styles.button} replace href="../runner">Pronto</Link>
