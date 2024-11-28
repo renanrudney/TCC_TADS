@@ -5,7 +5,7 @@ class AutenticacaoController < ApplicationController
   def login
     @usuario = Usuario::Base.find_by_login(params[:login])
     if @usuario&.authenticate_senha(params[:senha])
-      token = JwtToken.encode({ usuario_id: @usuario.id })
+      token = JwtToken.encode({ usuario_id: @usuario.id, nome: @usuario.nome })
       time = Time.now + 7.days.to_i
       render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"), login: @usuario.login, role: @usuario.tipo }, status: :ok
     else
