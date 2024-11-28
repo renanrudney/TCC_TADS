@@ -5,7 +5,7 @@ export default function SensorsLayout() {
     <>
     <Stack.Screen
         options={{
-          title: 'Execução Up Down Hand',
+          title: 'Tutorial Up Down Arm',
           headerStyle: { backgroundColor: '#145a73' },
           headerTintColor: '#fff',
         }}
