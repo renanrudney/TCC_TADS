@@ -29,6 +29,7 @@ class Usuario::Base < ApplicationRecord
       self.admin = Usuario::Admin.new
     when :profissional
       self.profissional ||= Usuario::Profissional.new
+      self.tipo ||= :profissional
     else
       self.comum ||= Usuario::Comum.new
       self.tipo ||= :comum
