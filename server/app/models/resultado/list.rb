@@ -1,11 +1,12 @@
 class Resultado::List
   Item = Struct.new(
-    :id, :qtd_toque, :intervalo_toque, :realizado, :usuario_id, :created_at, :updated_at, :accelerometers, :gyroscopes, :links, :type, keyword_init: true
+    :id, :qtd_toque, :intervalo_toque, :realizado, :usuario_id, :created_at, :updated_at, :links, :type, keyword_init: true
+    # :accelerometers, :gyroscopes
   ) do
     def initialize(*)
       super
-      self.accelerometers ||= []
-      self.gyroscopes ||= []
+      # self.accelerometers ||= []
+      # self.gyroscopes ||= []
       self.links = build_links
     end
 
@@ -59,7 +60,7 @@ class Resultado::List
   def self.updownarm(usuario_id:, realizado:)
     ::UpDownArmResultado.where(usuario_id:).where(realizado: realizado&.beginning_of_day..realizado&.end_of_day).find_each do |ud|
       attributes = ud.attributes.merge(type: :up_down_arm)
-      attributes = attributes.merge(accelerometers: ud.accelerometers, gyroscopes: ud.gyroscopes)
+      # attributes = attributes.merge(accelerometers: ud.accelerometers, gyroscopes: ud.gyroscopes)
       @resultados << Item.new(attributes)
     end
   end
@@ -67,7 +68,7 @@ class Resultado::List
   def self.heelrise(usuario_id:, realizado:)
     ::HeelRiseResultado.where(usuario_id:).where(realizado: realizado&.beginning_of_day..realizado&.end_of_day).find_each do |hr|
       attributes = hr.attributes.merge(type: :heel_rise)
-      attributes = attributes.merge(accelerometers: hr.accelerometers, gyroscopes: hr.gyroscopes)
+      # attributes = attributes.merge(accelerometers: hr.accelerometers, gyroscopes: hr.gyroscopes)
       @resultados << Item.new(attributes)
     end
   end
