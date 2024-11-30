@@ -33,6 +33,10 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
+  const handleSignUp = () => {
+    router.navigate("/sign-up")
+  }
+
   const onSubmit = (data: { login: string, senha: string }) => {
     serverAPI.post('/login', { login: data.login, senha: data.senha })
       .then(res => {
@@ -78,6 +82,9 @@ const LoginForm = () => {
           name="senha"
         />
         {errors.senha && <Text style={styles.error}>{errors.senha.message}</Text>}
+        <TouchableOpacity onPress={handleSignUp} style={{ marginTop: 8 }}>
+          <Text style={{ color: 'white', fontWeight: 'semibold' }}>Cadastrar-se</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.button}>
         <Text style={styles.buttonText}>Entrar</Text>
