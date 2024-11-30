@@ -15,7 +15,7 @@ export default function Tutorial() {
         source={require("@/assets/images/updownarm.png")}
         style={styles.image}
       />
-      <Link style={styles.button} replace href="../runner">Pronto</Link>
+      <Link style={styles.button} replace href="/updownarm/runner">Pronto</Link>
     </View>
   );
 };

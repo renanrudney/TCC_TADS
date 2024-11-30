@@ -15,7 +15,7 @@ export default function Tutorial() {
         source={require("@/assets/images/heelrise.png")}
         style={styles.image}
       />
-      <Link style={styles.button} replace href="../runner">Pronto</Link>
+      <Link style={styles.button} replace href="/heelrise/runner">Pronto</Link>
     </View>
   );
 };

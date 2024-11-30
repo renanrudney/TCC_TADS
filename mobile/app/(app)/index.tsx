@@ -39,7 +39,14 @@ export default function Index() {
         <ListItem.Chevron />
       </ListItem>
       
-      <Link href="/history">Histórico de testes</Link>
+      <Text style={styles.text}>Histórico de testes</Text>
+      <ListItem containerStyle={styles.listItem} onPress={() => navigation.dispatch(StackActions.push('history'))}>
+        <Icon name="clipboard-text-clock-outline" type="material-community" color="white" />
+        <ListItem.Content>
+          <ListItem.Title style={styles.listIemTitle}>Acessar histórico de testes</ListItem.Title>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
     </View>
     </>
   );

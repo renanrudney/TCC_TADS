@@ -8,7 +8,9 @@ import { useSession } from '@/src/ctx';
 
 export default function History() {
   const { session } = useSession()
-  const [results, setResults] = useState([])
+  const [data, setData] = useState<any>({})
+  const [page, setPage] = useState(1)
+  const [results, setResults] = useState<any[]>([])
   const [show, setShow] = useState(false)
   const [date, setDate] = useState<Date | undefined>()
   const [params, setParams] = useState<loadParams>({})
@@ -20,8 +22,18 @@ export default function History() {
 
   const loadResults = async (params?: loadParams) => {
     serverAPI.get('/resultados', { headers: { "Authorization": 'Bearer ' + session  }, params})
-    .then(res => setResults(res.data.records))
+    .then(res => {setData(res.data), setResults(res.data.records)})
     .catch(err => console.log(err))
+  }
+
+  const loadMoreResults = () => {
+    if(data.meta.pages != page) {
+      const paginated = params
+      Object.assign(paginated, { page: page + 1 })
+      serverAPI.get('/resultados', { headers: { "Authorization": 'Bearer ' + session  }, params})
+      .then(res => {setData(res.data), setResults([...results, ...res.data.records]), setPage(res.data.meta.page)})
+      .catch(err => console.log(err))
+    }
   }
 
   useEffect(() => {
@@ -124,6 +136,8 @@ export default function History() {
         data={results}
         keyExtractor={(_item, index) => index.toString()}
         renderItem={renderItem}
+        onEndReached={loadMoreResults}
+        onEndReachedThreshold ={0.1}
       />
     </SafeAreaView>
   );
