@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, Stack, useNavigation } from 'expo-router';
+import { router, Stack, useNavigation } from 'expo-router';
 import { Icon, ListItem } from '@rneui/themed';
 import { jwtDecode } from "jwt-decode";
 
@@ -60,10 +60,10 @@ interface JwtUser {
 
 const PersonComponent = (name: string) => {
   return (
-    <View style={{ flex: 1, flexDirection: 'row', gap: 8 }}>
+    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', gap: 8 }} onPress={() => router.navigate('/profile')}>
       <Icon name='account' type="material-community" color={'white'} />
       <Text style={{ color: 'white', fontSize: 20, fontWeight: '500' }}>{name}</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

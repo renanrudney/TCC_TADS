@@ -100,14 +100,14 @@ export default function History() {
 
     return (
       <ListItem.Swipeable
-        leftContent={(reset) => (
-          <Button
-            title="Info"
-            onPress={() => reset()}
-            icon={{ name: 'info', color: 'white' }}
-            buttonStyle={{ minHeight: '100%' }}
-          />
-        )}
+        // leftContent={(reset) => (
+        //   <Button
+        //     title="Info"
+        //     onPress={() => reset()}
+        //     icon={{ name: 'info', color: 'white' }}
+        //     buttonStyle={{ minHeight: '100%' }}
+        //   />
+        // )}
         rightContent={(reset) => (
           <Button
             title="Excluir"
