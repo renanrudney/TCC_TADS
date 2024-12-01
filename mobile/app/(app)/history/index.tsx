@@ -28,7 +28,7 @@ export default function History() {
   }
 
   const loadMoreResults = () => {
-    if(data.meta.pages != page) {
+    if(data.meta.pages > page) {
       const paginated = params
       Object.assign(paginated, { page: page + 1 })
       serverAPI.get('/resultados', { headers: { "Authorization": 'Bearer ' + session  }, params})
@@ -57,10 +57,16 @@ export default function History() {
   const handleType = () => {
     toggleTypeDialog();
     if(confirmedChecked != checked) {
-      const typeParams = Object.assign({...params}, { type: testTypes[checked - 1] })
+      const typeParams = Object.assign({...params}, { type: testTypes[checked - 1], page: 1 })
       setConfirmedChecked(checked)
       setParams(typeParams)
     }
+  }
+
+  const clearType = () => {
+    toggleTypeDialog();
+    setChecked(0)
+    setParams(Object.assign({...params}, { type: undefined, page: 1 }))
   }
 
   const toggleTypeDialog = () => {
@@ -146,11 +152,12 @@ export default function History() {
           ))}
 
         <Dialog.Actions>
+        <Dialog.Button title="LIMPAR" onPress={clearType} />
+        <Dialog.Button title="CANCELAR" onPress={toggleTypeDialog} />
           <Dialog.Button
-            title="CONFIRM"
+            title="CONFIRMAR"
             onPress={handleType}
           />
-          <Dialog.Button title="CANCEL" onPress={toggleTypeDialog} />
         </Dialog.Actions>
       </Dialog>
       <View style={styles.actions}>
