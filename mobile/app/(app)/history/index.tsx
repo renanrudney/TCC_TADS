@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { ListItem, Icon, Dialog, CheckBox, Divider } from '@rneui/themed'
+import { SafeAreaView, View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { ListItem, Icon, Dialog, CheckBox, Divider, Button } from '@rneui/themed'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 import { serverAPI } from '@/api/serverApi';
 import { useSession } from '@/src/ctx';
+import { ToastError } from '@/components/ToastError';
 
 export default function History() {
   const { session } = useSession()
@@ -66,6 +67,20 @@ export default function History() {
     setVisible(!visible);
   }
 
+  const deleteTest = (item: RenderItem["item"], reset: () => void) => {
+    Alert.alert('Excluir resultado', 'Deseja realmente excluir o resultado de teste?', [
+      { text: 'Cancelar' }, { text: 'Continuar', onPress: () => { handleDelete(item), reset() } }
+    ])
+  }
+
+  const handleDelete = (item: RenderItem["item"]) => {
+    const selfUrl = item.links.at(0)?.href as string
+    serverAPI.delete(selfUrl, { headers: { "Authorization": 'Bearer ' + session  } }).then(() => {
+      const updatedResults = results.filter(r => (r.id !== item.id || r.type !== item.type) )
+      setResults(updatedResults)
+    }).catch((err) => { ToastError('Ocorreu um erro ao excluir. Tente novamente mais tarde.'), console.log(err.response.data) })
+  }
+
   const renderItem = ({ item }: RenderItem) => {
     var itemType
     if (item.type === "up_down_arm")
@@ -78,13 +93,30 @@ export default function History() {
     const itemDate = new Date(item.realizado).toLocaleString('pt-BR')
 
     return (
-      <ListItem bottomDivider>
+      <ListItem.Swipeable
+        leftContent={(reset) => (
+          <Button
+            title="Info"
+            onPress={() => reset()}
+            icon={{ name: 'info', color: 'white' }}
+            buttonStyle={{ minHeight: '100%' }}
+          />
+        )}
+        rightContent={(reset) => (
+          <Button
+            title="Excluir"
+            onPress={() => deleteTest(item, reset)}
+            icon={{ name: 'delete', color: 'white' }}
+            buttonStyle={{ minHeight: '100%', backgroundColor: 'red' }}
+          />
+        )}
+      >
         <Icon name={itemType.icon} type="material-community" color="grey" />
         <ListItem.Content>
           <ListItem.Title>{`Teste ${itemType.title} - ${item.id}`}</ListItem.Title>
           <ListItem.Subtitle>{itemDate}</ListItem.Subtitle>
         </ListItem.Content>
-      </ListItem>
+      </ListItem.Swipeable>
     )
   }
 
@@ -148,6 +180,9 @@ interface RenderItem {
     type: "up_down_arm" | "heel_rise" | "hitpoint"
     realizado: number
     id: number
+    links: [{
+      href: string, rel: string
+    }]
   }
 }
 
