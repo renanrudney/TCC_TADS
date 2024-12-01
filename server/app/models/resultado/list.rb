@@ -1,6 +1,6 @@
 class Resultado::List
   Item = Struct.new(
-    :id, :qtd_toque, :intervalo_toque, :realizado, :usuario_id, :created_at, :updated_at, :links, :type, keyword_init: true
+    :id, :qtd_toque, :intervalo_medio, :realizado, :usuario_id, :created_at, :updated_at, :links, :type, keyword_init: true
     # :accelerometers, :gyroscopes
   ) do
     def initialize(*)

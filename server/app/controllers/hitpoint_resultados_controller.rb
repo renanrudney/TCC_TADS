@@ -48,7 +48,7 @@ class HitpointResultadosController < ApplicationController
     # Only allow a list of trusted parameters through.
     def hitpoint_resultado_params
       params.require(:resultado).permit([
-        :qtd_toque, :intervalo_toque, :realizado
+        :qtd_toque, :intervalo_medio, :realizado, hit_data_attributes: [ :hit_number, :timestamp ]
       ]).merge(usuario_id: @usuario_atual.id)
     end
 end

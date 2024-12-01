@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
   create_table "accelerometers", force: :cascade do |t|
     t.decimal "x_axis", precision: 30, scale: 25
     t.decimal "y_axis", precision: 30, scale: 25
@@ -44,6 +44,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
     t.index ["reference_type", "reference_id"], name: "index_gyroscopes_on_reference_type_and_reference_id"
   end
 
+  create_table "hit_data", force: :cascade do |t|
+    t.integer "hit_number"
+    t.datetime "timestamp"
+    t.integer "resultado_hitpoint_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resultado_hitpoint_id"], name: "index_hit_data_on_resultado_hitpoint_id"
+  end
+
   create_table "resultado_heelrise", force: :cascade do |t|
     t.datetime "realizado"
     t.integer "usuario_id"
@@ -54,7 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_234844) do
 
   create_table "resultado_hitpoint", force: :cascade do |t|
     t.integer "qtd_toque"
-    t.integer "intervalo_toque"
+    t.decimal "intervalo_medio", precision: 30, scale: 25
     t.datetime "realizado"
     t.integer "usuario_id"
     t.datetime "created_at", null: false
