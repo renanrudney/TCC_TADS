@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
-import { ListItem, Icon, Dialog, CheckBox, Divider, Button } from '@rneui/themed'
+import { ListItem, Icon, Dialog, CheckBox, Divider, Button, Overlay } from '@rneui/themed'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 import { serverAPI } from '@/api/serverApi';
@@ -18,8 +18,10 @@ export default function History() {
   const [checked, setChecked] = useState(0)
   const [confirmedChecked, setConfirmedChecked] = useState(0)
   const [visible, setVisible] = useState(false)
+  const [overlayVisible, setOverlayVisible] = useState(false)
+  const [currentItem, setCurrentItem] = useState<RenderItem["item"]>({} as RenderItem["item"])
 
-  const testTypes = ['up_down_arm', 'heel_rise']
+  const testTypes = ['up_down_arm', 'heel_rise', 'hitpoint']
 
   const loadResults = async (params?: loadParams) => {
     serverAPI.get('/resultados', { headers: { "Authorization": 'Bearer ' + session  }, params})
@@ -79,6 +81,11 @@ export default function History() {
     ])
   }
 
+  const showOverlay = (item: RenderItem["item"]) => {
+    setOverlayVisible(true)
+    setCurrentItem(item)
+  }
+
   const handleDelete = (item: RenderItem["item"]) => {
     const selfUrl = item.links.at(0)?.href as string
     serverAPI.delete(selfUrl, { headers: { "Authorization": 'Bearer ' + session  } }).then(() => {
@@ -87,27 +94,29 @@ export default function History() {
     }).catch((err) => { ToastError('Ocorreu um erro ao excluir. Tente novamente mais tarde.'), console.log(err.response.data) })
   }
 
-  const renderItem = ({ item }: RenderItem) => {
-    var itemType
-    if (item.type === "up_down_arm")
-      itemType = { icon: "human-greeting", title: "Up Down Arm" }
-    else if (item.type === "heel_rise")
-      itemType = { icon: "human-male-height-variant",title: "Heel Rise" }
+  const formatType = (itemType: string) => {
+    if (itemType === "up_down_arm")
+      return { icon: "human-greeting", title: "Up Down Arm" }
+    else if (itemType === "heel_rise")
+      return { icon: "human-male-height-variant",title: "Heel Rise" }
     else
-      itemType = { icon: "gesture-tap-box",title: "Hit the Point" }
+      return { icon: "gesture-tap-box", title: "Hit the Point" }
+  }
 
+  const renderItem = ({ item }: RenderItem) => {
+    const itemType = formatType(item.type)
     const itemDate = new Date(item.realizado).toLocaleString('pt-BR')
 
     return (
       <ListItem.Swipeable
-        // leftContent={(reset) => (
-        //   <Button
-        //     title="Info"
-        //     onPress={() => reset()}
-        //     icon={{ name: 'info', color: 'white' }}
-        //     buttonStyle={{ minHeight: '100%' }}
-        //   />
-        // )}
+        leftContent={(reset) => (
+          <Button
+            title="Info"
+            onPress={() => { showOverlay(item), reset() }}
+            icon={{ name: 'info', color: 'white' }}
+            buttonStyle={{ minHeight: '100%' }}
+          />
+        )}
         rightContent={(reset) => (
           <Button
             title="Excluir"
@@ -160,6 +169,31 @@ export default function History() {
           />
         </Dialog.Actions>
       </Dialog>
+      <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(false)}>
+        <View style={styles.overlay}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+            {`Teste ${formatType(currentItem?.type).title} - ${currentItem?.id}`}
+          </Text>
+          {currentItem?.type === 'hitpoint' ?
+            <>
+              <Text>Quantidade de toques: {currentItem?.qtd_toque}</Text>
+              <Text>Intervalo médio: {currentItem?.intervalo_medio?.slice(0, 7)} ms</Text>
+            </>
+          :
+            <>
+              <Text>Dados coletados (Acelerômetro): {currentItem?.qtd_accelerometers}</Text>
+              <Text>Dados coletados (Giroscópio): {currentItem?.qtd_gyroscopes}</Text>
+            </>
+          }
+          <Text>Realizado: {new Date(currentItem?.realizado).toLocaleString('pt-BR')}</Text>
+          <TouchableOpacity
+            style={{ alignSelf: 'flex-end', backgroundColor: '#145a73', paddingVertical: 4, borderRadius: 50, paddingHorizontal: 10 }}
+            onPress={() => setOverlayVisible(false)}
+          >
+            <Text style={{ color: 'white' }}>OK</Text>
+          </TouchableOpacity>
+        </View>
+      </Overlay>
       <View style={styles.actions}>
         <TouchableOpacity style={styles.barRow} onPress={() => setShow(true)}>
           <Text style={styles.barText}>{date ? date.toLocaleDateString('pt-BR') : 'Pesquise pela data...'}</Text>
@@ -187,6 +221,10 @@ interface RenderItem {
     type: "up_down_arm" | "heel_rise" | "hitpoint"
     realizado: number
     id: number
+    qtd_toque?: number
+    intervalo_medio?: string
+    qtd_gyroscopes?: number
+    qtd_accelerometers?: number
     links: [{
       href: string, rel: string
     }]
@@ -224,5 +262,13 @@ const styles = StyleSheet.create({
     },
     barText: {
       fontWeight: 'bold'
+    },
+    overlay: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignContent: 'center',
+      gap: 16,
+      width: 250,
+      margin: 16
     }
 });
