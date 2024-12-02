@@ -1,22 +1,22 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { baseUrl } from '../config/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   httpClient = inject(HttpClient);
-  baseUrl = 'http://localhost:4200/api';
 
   constructor() {}
 
   registro(data: any) {
-    return this.httpClient.post(`${this.baseUrl}/registro`, data);
+    return this.httpClient.post(`${baseUrl}/registro`, data);
   }
 
   login(data: any) {
-    return this.httpClient.post(`${this.baseUrl}/login`, data)
+    return this.httpClient.post(`${baseUrl}/login`, data)
       .pipe(tap((result) => {
         localStorage.setItem('authUser', JSON.stringify(result));
       }));
