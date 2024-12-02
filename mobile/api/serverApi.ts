@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const serverAPI = axios.create({
-  baseURL: "http://172.19.106.156:3000"
+  baseURL: "http://host.docker.internal:3000"
 })

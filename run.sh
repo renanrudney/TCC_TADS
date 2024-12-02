@@ -1,0 +1,1 @@
+docker-compose -f start-server.yml up -d
