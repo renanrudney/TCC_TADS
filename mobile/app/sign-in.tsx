@@ -12,7 +12,7 @@ import { ToastError } from '@/components/ToastError';
 export default function SignIn() {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View style={{ width: '100%', height: '50%', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.logoContainer}>
         <Text style={{ fontSize: 42, textAlign: 'center' }}>Testes{'\n'}Parkinson</Text>
       </View>
       <View style={{ backgroundColor: '#145a73', width: '100%', flex: 1 }}>
@@ -43,7 +43,7 @@ const LoginForm = () => {
         signIn(res.data.token)
         router.replace('/')
       })
-      .catch(err => ToastError(err.response.data))
+      .catch(err => ToastError(err?.response?.data))
   };
 
   return (
@@ -94,6 +94,7 @@ const LoginForm = () => {
 };
 
 const styles = StyleSheet.create({
+  logoContainer: { width: '100%', height: '50%', flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' },
   inputLabel: { color: 'white', fontWeight: 'bold' },
   input: { backgroundColor: 'white', padding: 6 },
   error: { color: 'red', fontWeight: 'bold' },

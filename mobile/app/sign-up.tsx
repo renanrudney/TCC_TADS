@@ -47,7 +47,7 @@ const SignUpForm = () => {
       .then(_res => {
         router.replace('/')
       })
-      .catch(err => ToastError(err.response.data))
+      .catch(err => ToastError(err?.response?.data))
   };
 
   const handleDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
