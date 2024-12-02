@@ -1,0 +1,7 @@
+services:
+  tcc-server:
+    image: tcc-server
+    ports:
+      - 3000:3000
+    environment:
+      - RAILS_MASTER_KEY=1dfccf29f7c06827fe0862f6d8744c32
