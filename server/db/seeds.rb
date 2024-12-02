@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+if Usuario::Profissional.none?
+Usuario::Base.create!(
+  cpf: '00000000000', nome: 'Profissional', login: 'profissional', senha: '123456', tipo: :profissional,
+  profissional_attributes: {
+    tipo_registro: 'Teste', registro: 'CRM-Teste', especialidade: 'Teste'
+  }
+)
+end
