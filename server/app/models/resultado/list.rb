@@ -51,14 +51,20 @@ class Resultado::List
   end
 
   def self.hitpoint(usuario_id:, realizado:)
-    ::HitpointResultado.where(usuario_id:).where(realizado: realizado&.beginning_of_day..realizado&.end_of_day).find_each do |hp|
+    query = ::HitpointResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
+    query = query.where(usuario_id:) if usuario_id.present?
+
+    query.find_each do |hp|
       attributes = hp.attributes.merge(type: :hitpoint)
       @resultados << Item.new(attributes)
     end
   end
 
   def self.updownarm(usuario_id:, realizado:)
-    ::UpDownArmResultado.where(usuario_id:).where(realizado: realizado&.beginning_of_day..realizado&.end_of_day).find_each do |ud|
+    query = ::UpDownArmResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
+    query = query.where(usuario_id:) if usuario_id.present?
+
+    query.find_each do |ud|
       attributes = ud.attributes.merge(type: :up_down_arm)
       attributes = attributes.merge(qtd_accelerometers: ud.accelerometers.count, qtd_gyroscopes: ud.gyroscopes.count)
       @resultados << Item.new(attributes)
@@ -66,7 +72,10 @@ class Resultado::List
   end
 
   def self.heelrise(usuario_id:, realizado:)
-    ::HeelRiseResultado.where(usuario_id:).where(realizado: realizado&.beginning_of_day..realizado&.end_of_day).find_each do |hr|
+    query = ::HeelRiseResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
+    query = query.where(usuario_id:) if usuario_id.present?
+
+    query.find_each do |hr|
       attributes = hr.attributes.merge(type: :heel_rise)
       attributes = attributes.merge(qtd_accelerometers: ud.accelerometers.count, qtd_gyroscopes: ud.gyroscopes.count)
       @resultados << Item.new(attributes)
