@@ -205,13 +205,21 @@ export default function History() {
         </TouchableOpacity>
       </View>
       <Divider width={1}/>
-      <FlatList
-        data={results}
-        keyExtractor={(_item, index) => index.toString()}
-        renderItem={renderItem}
-        onEndReached={loadMoreResults}
-        onEndReachedThreshold ={0.1}
-      />
+      {results.length > 0 ?
+        <FlatList
+          data={results}
+          keyExtractor={(_item, index) => index.toString()}
+          renderItem={renderItem}
+          onEndReached={loadMoreResults}
+          onEndReachedThreshold ={0.1}
+        />
+      :
+        <View style={{ flex: 1, alignItems: 'center', alignContent: 'center', justifyContent: 'center', margin: 48 }}>
+          <Text style={{ fontSize: 18, fontWeight: '500' }}>
+            Não foram encontrados testes, revise os filtros aplicados ou execute um novo teste.
+          </Text>
+        </View>
+      }
     </SafeAreaView>
   );
 };

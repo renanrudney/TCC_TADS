@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Accelerometer, Gyroscope } from 'expo-sensors';
 
 import { serverAPI } from '@/api/serverApi';
@@ -7,6 +7,7 @@ import { useSession } from '@/src/ctx';
 import { useNavigation } from 'expo-router';
 import { Dialog } from '@rneui/themed';
 import { StackActions } from '@react-navigation/native';
+import { ActionButton } from '@/components/ActionButton';
 
 export default function Runner() {
   const [prepare, setPrepare] = useState(true)
@@ -21,11 +22,11 @@ export default function Runner() {
   const [accelerometerData, setAccelerometerData] = useState({ x: 0, y: 0, z: 0, timestamp: 0 })
   const [gyroscopeData, setGyroscopeData] = useState({ x: 0, y: 0, z: 0, timestamp: 0 })
 
-  const [accelerometerArray, setAccelerometerArray] = useState([])
-  const [gyroscopeArray, setGyroscopeArray] = useState([])
+  const [accelerometerArray, setAccelerometerArray] = useState<any[]>([])
+  const [gyroscopeArray, setGyroscopeArray] = useState<any[]>([])
 
-  const [accelerometerSubscription, setAccelerometerSubscription] = useState(null);
-  const [gyroscopeSubscription, setGyroscopeSubscription] = useState(null);
+  const [accelerometerSubscription, setAccelerometerSubscription] = useState<any>(null);
+  const [gyroscopeSubscription, setGyroscopeSubscription] = useState<any>(null);
 
   const { session } = useSession()
   const navigation = useNavigation()
@@ -60,8 +61,8 @@ export default function Runner() {
   };
 
   const _unsubscribe = () => {
-    accelerometerSubscription.remove();
-    gyroscopeSubscription.remove();
+    accelerometerSubscription?.remove();
+    gyroscopeSubscription?.remove();
     setAccelerometerSubscription(null)
     setGyroscopeSubscription(null)
     setCollecting(false)
@@ -86,6 +87,11 @@ export default function Runner() {
     clearTimeout(running)
     _unsubscribe()
     setAccelerometerArray([]), setGyroscopeArray([])
+  }
+
+  const resetCollecting = () => {
+    setPrepare(true)
+    setTimer(5)
   }
 
   const formatData = (dataArray: Array<any>) => {
@@ -121,30 +127,38 @@ export default function Runner() {
   return (
       <View style={styles.container}>
         {prepare ?
-          <>
+          <View style={[styles.row, styles.centered]}>
             <Text style={styles.timerText}>Comece a execução dos movimentos daqui a 5 segundos:</Text>
             <Text style={styles.timer}>{timer}</Text>
-          </>
+          </View>
           :
-          <>
-            {!collecting && <Button color={'red'} title="Descartar e iniciar novo teste" onPress={startCollecting} /> }
+          <View style={[styles.row, styles.centered]}>
+            <View style={styles.row}>
+              {(collecting) &&
+                <>
+                  <Text style={styles.heading}>Coletando...</Text>
+                  <ActionButton text='Parar' type='danger' onPress={stopCollecting} />
+                </>
+              }
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.title}>Dados recentes:</Text>
 
-            {collecting &&
-              <>
-                <Text style={styles.heading}>Coletando...</Text>
-                <Button title="Parar" onPress={stopCollecting} />
-              </>
-            }
-            <Text style={styles.title}>Dados recentes:</Text>
+              <Text style={styles.heading}>Acelerômetro:</Text>
+              <Text>X: {accelerometerData.x.toFixed(2)} Y: {accelerometerData.y.toFixed(2)} Z: {accelerometerData.z.toFixed(2)} Timestamp: {accelerometerData.timestamp}</Text>
 
-            <Text style={styles.heading}>Acelerômetro:</Text>
-            <Text>X: {accelerometerData.x.toFixed(2)} Y: {accelerometerData.y.toFixed(2)} Z: {accelerometerData.z.toFixed(2)} Timestamp: {accelerometerData.timestamp}</Text>
-
-            <Text style={styles.heading}>Giroscópio:</Text>
-            <Text style={styles.lastData}>X: {gyroscopeData.x.toFixed(2)} Y: {gyroscopeData.y.toFixed(2)} Z: {gyroscopeData.z.toFixed(2)} Timestamp: {gyroscopeData.timestamp}</Text>
-
-            <Button color={'green'} title="Concluir teste e enviar" onPress={handleTest} disabled={collecting || (accelerometerArray.length === 0 && gyroscopeArray.length === 0)} />
-          </>
+              <Text style={styles.heading}>Giroscópio:</Text>
+              <Text style={styles.lastData}>X: {gyroscopeData.x.toFixed(2)} Y: {gyroscopeData.y.toFixed(2)} Z: {gyroscopeData.z.toFixed(2)} Timestamp: {gyroscopeData.timestamp}</Text>
+            </View>
+            <View style={{ flex: 1, gap: 24 }}>
+              {(!collecting) &&
+                <ActionButton text='Descartar e iniciar novo teste' type='danger' onPress={resetCollecting} />
+              }
+              <ActionButton text='Concluir teste e enviar' type='success' onPress={handleTest}
+                disabled={collecting || (accelerometerArray.length === 0 && gyroscopeArray.length === 0) }
+              />
+            </View>
+          </View>
         }
         <Dialog isVisible={sending}>
           {sendError ? 
@@ -168,12 +182,9 @@ export default function Runner() {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 16,
-    },
+    container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
+    row: { flex: 1, gap: 8 },
+    centered: { alignContent: 'center', alignItems: 'center', justifyContent: 'center' },
     title: {
       fontSize: 24,
       fontWeight: 'bold',

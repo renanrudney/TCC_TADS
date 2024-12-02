@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { serverAPI } from '@/api/serverApi';
 import { useSession } from '@/src/ctx';
 import { useNavigation } from 'expo-router';
 import { Dialog } from '@rneui/themed';
 import { StackActions } from '@react-navigation/native';
+import { ActionButton } from '@/components/ActionButton';
 
 export default function Runner() {
   const [prepare, setPrepare] = useState(true)
   const [timer, setTimer] = useState(5)
 
-  const [collecting, setCollecting] = useState(true)
+  const [collecting, setCollecting] = useState(false)
   const [running, setRunning] = useState<NodeJS.Timeout>()
   const [sending, setSending] = useState(false)
   const [sendError, setSendError] = useState(false)
@@ -49,6 +50,7 @@ export default function Runner() {
   const _unsubscribe = () => setCollecting(false)
 
   const startCollecting = () => {
+    setHitData([])
     setCounter(0)
     setSending(false)
     setCollecting(true)
@@ -60,12 +62,16 @@ export default function Runner() {
     setHitData([])
   }
 
+  const resetCollecting = () => {
+    setPrepare(true)
+    setTimer(5)
+  }
+
   const sendDataToServer = async (data: any) => {
     setSending(true)
     serverAPI.post('hitpoint_resultados', data, { headers: { "Authorization": 'Bearer ' + session } })
       .then(_res => {
         setSuccess(true)
-        console.log(_res.data)
         setTimeout(() => { navigation.dispatch(StackActions.replace('history')) }, 3000)
       })
       .catch(err => {
@@ -109,9 +115,9 @@ export default function Runner() {
               </View>
             }
             <View style={{ flex: 1, gap: 18 }}>
-              {!collecting && <Button color={'red'} title="Descartar e iniciar novo teste" onPress={startCollecting} /> }
-              {collecting && <Button title="Parar" onPress={stopCollecting} />}
-              <Button color={'green'} title="Concluir teste e enviar" onPress={handleTest} disabled={collecting || hitData.length === 0} />
+              {!collecting && <ActionButton text='Descartar e iniciar novo teste' type='danger' onPress={resetCollecting} /> }
+              {collecting && <ActionButton text="Parar" type='danger' onPress={stopCollecting} />}
+              <ActionButton type='success' text="Concluir teste e enviar" onPress={handleTest} disabled={collecting || hitData.length === 0} />
             </View>
           </View>
         }

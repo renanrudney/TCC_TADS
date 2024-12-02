@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Image } from '@rneui/themed';
 import { Link } from 'expo-router';
+import { LinkButton } from '@/components/LinkButton';
 
 export default function Tutorial() {
   return (
@@ -15,7 +16,7 @@ export default function Tutorial() {
         source={require("@/assets/images/updownarm.png")}
         style={styles.image}
       />
-      <Link style={styles.button} replace href="/updownarm/runner">Pronto</Link>
+      <LinkButton href="/updownarm/runner" text='Pronto'/>
     </View>
   );
 };
@@ -38,15 +39,5 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       aspectRatio: 1,
       padding: 20
-    },
-    button: {
-      padding: 4,
-      fontSize: 24,
-      width: 160,
-      backgroundColor: '#145a73',
-      color: '#fff',
-      textAlign: 'center',
-      borderRadius: 50,
-      margin: 20
     },
 });
