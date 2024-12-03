@@ -1,5 +1,4 @@
 class ProfissionaisController < ApplicationController
-  skip_before_action :autenticar_usuario
   before_action :set_usuario, only: [ :show, :update, :destroy ]
   # before_action :check_admin # TODO: Uncomment on add authentication on client side
 

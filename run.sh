@@ -1,4 +1,4 @@
 docker-compose -f start-postgres.yml up -d
-sleep 10
+sleep 5
 
-# docker-compose -f start-server.yml up -d
+docker-compose -f start-server.yml up -d
