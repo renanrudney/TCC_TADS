@@ -77,7 +77,7 @@ class Resultado::List
 
     query.find_each do |hr|
       attributes = hr.attributes.merge(type: :heel_rise)
-      attributes = attributes.merge(qtd_accelerometers: ud.accelerometers.count, qtd_gyroscopes: ud.gyroscopes.count)
+      attributes = attributes.merge(qtd_accelerometers: hr.accelerometers.count, qtd_gyroscopes: hr.gyroscopes.count)
       @resultados << Item.new(attributes)
     end
   end
