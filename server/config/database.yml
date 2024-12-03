@@ -10,8 +10,14 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: storage/development.sqlite3
+  # <<: *default
+  # database: storage/development.sqlite3
+  adapter: postgresql
+  host: host.docker.internal
+  port: 30000
+  username: postgres
+  password: postgres
+  database: tcc_db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
