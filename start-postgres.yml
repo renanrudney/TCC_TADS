@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tcc-postgres
+    ports:
+      - 30000:5432
+    volumes:
+      - tcc-postgres-volume:/var/lib/postgresql/data
+    environment:
+      DBPOSTGRES: tcc_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - tcc-net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 30001:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    volumes:
+      - tcc-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - tcc-net
+
+networks:
+  tcc-net:
+    name: tcc-net
+    external: true
+
+volumes:
+  tcc-postgres-volume:
+    driver: local
+    name: tcc-postgres-volume

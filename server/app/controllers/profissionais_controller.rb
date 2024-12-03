@@ -1,5 +1,4 @@
 class ProfissionaisController < ApplicationController
-  skip_before_action :autenticar_usuario
   before_action :set_usuario, only: [ :show, :update, :destroy ]
   # before_action :check_admin # TODO: Uncomment on add authentication on client side
 
@@ -45,7 +44,7 @@ class ProfissionaisController < ApplicationController
     permitted_params = usuario_params
     {
       cpf: permitted_params[:cpf], login: permitted_params[:login], senha: permitted_params[:senha], tipo: :profissional,
-      nome: permitted_params[:nome], profissional_attributes: {
+      nome: permitted_params[:nome], sobrenome: permitted_params[:sobrenome], nascimento: permitted_params[:nascimento], profissional_attributes: {
         tipo_registro: permitted_params[:tipo_registro], registro: permitted_params[:registro], especialidade: permitted_params[:especialidade]
       }
     }

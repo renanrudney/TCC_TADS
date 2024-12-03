@@ -7,6 +7,18 @@ const apiUrl = {
   resultados: baseUrl + "/resultados",
 }
 
+function urlByTipo(tipo: string) {
+  console.log(tipo)
+  switch (tipo) {
+    case 'up_down_arm':
+      return baseUrl + '/up_down_arm_resultados'
+    case 'heel_rise':
+      return baseUrl + '/heel_rise_resultados'
+    default:
+      return baseUrl + '/hitpoint_resultados'
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +30,8 @@ export class ResultadoProviderService {
     return this.apiService.get(apiUrl.resultados)
   }
 
-  public getResultadoById(id: any): Observable<any> {
-    return this.apiService.get(apiUrl.resultados + '/' + id);
+  public getResultadoByIdTipo(id: any, tipo: any): Observable<any> {
+    console.log(urlByTipo(tipo) + '/' + id)
+    return this.apiService.get(urlByTipo(tipo) + '/' + id);
   }
 }

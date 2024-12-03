@@ -13,6 +13,7 @@ development:
   <<: *default
   database: storage/development.sqlite3
 
+
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
@@ -28,5 +29,9 @@ test:
 # Similarly, if you deploy your application as a Docker container, you must
 # ensure the database is located in a persisted volume.
 production:
-  <<: *default
-  database: storage/production.sqlite3
+  adapter: postgresql
+  host: host.docker.internal
+  port: 30000
+  username: postgres
+  password: postgres
+  database: tcc_db

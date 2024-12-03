@@ -3,7 +3,7 @@ class HitpointResultadosController < ApplicationController
 
   # GET /hitpoint_resultados
   def index
-    resultados = HitpointResultado.where(usuario_id: @usuario_atual.id)
+    resultados = @usuario_atual.profissional? ? HitpointResultado.all : HitpointResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: HitpointResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -42,7 +42,12 @@ class HitpointResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_hitpoint_resultado
-      @hitpoint_resultado = HitpointResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+      @hitpoint_resultado =
+        if @usuario_atual.profissional?
+          HitpointResultado.find_by!(id: params[:id])
+        else
+          HitpointResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+        end
     end
 
     # Only allow a list of trusted parameters through.

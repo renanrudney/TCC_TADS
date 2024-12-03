@@ -3,7 +3,7 @@ class UpDownArmResultadosController < ApplicationController
 
   # GET /up_down_arm_resultados
   def index
-    resultados = UpDownArmResultado.where(usuario_id: @usuario_atual.id)
+    resultados = @usuario_atual.profissional? ? UpDownArmResultado.all : UpDownArmResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: UpDownArmResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -42,7 +42,12 @@ class UpDownArmResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_up_down_arm_resultado
-      @up_down_arm_resultado = UpDownArmResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+      @up_down_arm_resultado =
+        if @usuario_atual.profissional?
+          UpDownArmResultado.find_by!(id: params[:id])
+        else
+          UpDownArmResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+        end
     end
 
     # Only allow a list of trusted parameters through.
