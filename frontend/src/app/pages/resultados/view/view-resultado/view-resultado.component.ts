@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterModule } from "@angular/router";
 import { ResultadoProviderService } from "../../../../services/providers/resultado/resultado-provider.service";
 import { HighchartsChartModule } from 'highcharts-angular'
 import Highcharts from 'highcharts'
@@ -7,7 +7,7 @@ import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-view-resultado',
-  imports: [CommonModule, HighchartsChartModule],
+  imports: [CommonModule, RouterModule, HighchartsChartModule],
   templateUrl: './view-resultado.component.html',
   styleUrl: './view-resultado.component.css'
 })
@@ -59,8 +59,9 @@ export class ViewResultadoComponent implements OnInit {
       title: { text: 'Toque/Hit' },
       series : [
         {
-          data: this.resultado.hit_data.map((h: any) => [parseFloat(h.timestamp), h.hit_number]),
+          data: this.resultado.hit_data.map((h: any) => [parseFloat(h.timestamp), h.hit_number + 1]),
           type: 'line',
+          name: 'hit'
         },
       ]
     }
