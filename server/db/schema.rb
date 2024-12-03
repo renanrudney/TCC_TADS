@@ -10,22 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_03_022515) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "accelerometers", force: :cascade do |t|
     t.decimal "x_axis", precision: 30, scale: 25
     t.decimal "y_axis", precision: 30, scale: 25
     t.decimal "z_axis", precision: 30, scale: 25
-    t.decimal "timestamp", precision: 30, scale: 25
-    t.integer "reference_id"
+    t.bigint "reference_id"
     t.string "reference_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "timestamp"
     t.index ["reference_id"], name: "index_accelerometers_on_reference_id"
     t.index ["reference_type", "reference_id"], name: "index_accelerometers_on_reference_type_and_reference_id"
   end
 
   create_table "admin", force: :cascade do |t|
-    t.integer "usuario_id"
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_admin_on_usuario_id", unique: true
@@ -35,27 +38,27 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
     t.decimal "x_axis", precision: 30, scale: 25
     t.decimal "y_axis", precision: 30, scale: 25
     t.decimal "z_axis", precision: 30, scale: 25
-    t.decimal "timestamp", precision: 30, scale: 25
-    t.integer "reference_id"
+    t.bigint "reference_id"
     t.string "reference_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "timestamp"
     t.index ["reference_id"], name: "index_gyroscopes_on_reference_id"
     t.index ["reference_type", "reference_id"], name: "index_gyroscopes_on_reference_type_and_reference_id"
   end
 
   create_table "hit_data", force: :cascade do |t|
     t.integer "hit_number"
-    t.datetime "timestamp"
-    t.integer "resultado_hitpoint_id"
+    t.bigint "resultado_hitpoint_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "timestamp"
     t.index ["resultado_hitpoint_id"], name: "index_hit_data_on_resultado_hitpoint_id"
   end
 
   create_table "resultado_heelrise", force: :cascade do |t|
-    t.datetime "realizado"
-    t.integer "usuario_id"
+    t.datetime "realizado", precision: nil
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_resultado_heelrise_on_usuario_id"
@@ -64,16 +67,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
   create_table "resultado_hitpoint", force: :cascade do |t|
     t.integer "qtd_toque"
     t.decimal "intervalo_medio", precision: 30, scale: 25
-    t.datetime "realizado"
-    t.integer "usuario_id"
+    t.datetime "realizado", precision: nil
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_resultado_hitpoint_on_usuario_id"
   end
 
   create_table "resultado_updownarm", force: :cascade do |t|
-    t.datetime "realizado"
-    t.integer "usuario_id"
+    t.datetime "realizado", precision: nil
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_resultado_updownarm_on_usuario_id"
@@ -81,8 +84,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
 
   create_table "usu_comum", force: :cascade do |t|
     t.string "genero", limit: 1
-    t.integer "nivel_sintoma", limit: 1
-    t.integer "usuario_id"
+    t.integer "nivel_sintoma", limit: 2
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_usu_comum_on_usuario_id", unique: true
@@ -92,7 +95,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_01_205228) do
     t.string "tipo_registro"
     t.string "registro"
     t.string "especialidade"
-    t.integer "usuario_id"
+    t.bigint "usuario_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["usuario_id"], name: "index_usu_profissional_on_usuario_id", unique: true
