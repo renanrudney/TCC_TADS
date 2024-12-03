@@ -55,7 +55,6 @@ body {
 
 /* Botão Criar Profissional */
 .create-profissional {
-  position: absolute;
   top: 20px;
   right: 40px; /* Ajustado para mover mais para a direita */
   background-color: #28a745;
