@@ -91,9 +91,6 @@ GEM
     connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.4)
-    debug (1.9.2)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.13.0)
     globalid (1.2.1)
@@ -149,7 +146,6 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
     psych (5.1.2)
       stringio
     puma (6.4.3)
@@ -273,15 +269,12 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
-  debug
   jwt
   pagy (~> 9.1)
-  pg
   puma (>= 5.0)
   rails (~> 7.2.1)
   rubocop-rails-omakase
   sqlite3 (>= 1.4)
-  tzinfo-data
 
 BUNDLED WITH
-   2.5.16
+   2.5.23
