@@ -11,6 +11,9 @@ const apiUrl = {
   providedIn: 'root'
 })
 export class ProfissionalProviderService {
+  deleteProfissional(id: number) {
+    throw new Error('Method not implemented.');
+  }
   apiService = inject(HttpProviderService)
   constructor() { }
 
