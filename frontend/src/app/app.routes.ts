@@ -6,15 +6,13 @@ import { authGuard } from './auth/auth.guard';
 import { ResultadosComponent } from './pages/resultados/resultados.component';
 import { ViewResultadoComponent } from './pages/resultados/view/view-resultado/view-resultado.component';
 import { CreateProfissionalComponent } from './pages/profissional/create/create-profissional/create-profissional.component';
-// import { CreateProfissionalComponent } from './profissional/create/create-profissional/create-profissional.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/resultados', pathMatch: 'full' },
-  { path: '', component: ProfissionalComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
-  { path: 'profissional', component: ProfissionalComponent, canActivate: [authGuard] },
   { path: 'resultados', component: ResultadosComponent, canActivate: [authGuard] },
   { path: 'resultados/:resultadoId/tipo/:tipo', component: ViewResultadoComponent, canActivate: [authGuard] },
+  { path: 'profissional', component: ProfissionalComponent, canActivate: [authGuard] },
   { path: 'create-profissional', component: CreateProfissionalComponent },
 ];

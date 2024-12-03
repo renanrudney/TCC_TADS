@@ -116,6 +116,7 @@ const SignUpForm = () => {
               value={value}
               placeholder="CPF"
               style={styles.input}
+              keyboardType='number-pad'
             />
           )}
           name="cpf"
@@ -134,7 +135,7 @@ const SignUpForm = () => {
         />)}
       </View>
       <View style={{ flex: 1 }} >
-        <Text style={styles.inputLabel}>Gênero</Text>
+        <Text style={styles.inputLabel}>Sexo</Text>
         <View style={{ flex: 1, flexDirection: "row", flexWrap: 'wrap' }}>
           <CheckBox
             checked={genero === 'M'}
@@ -152,16 +153,6 @@ const SignUpForm = () => {
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             title={'Feminino'}
-            textStyle={{ color: 'white' }}
-            checkedColor='white'
-            containerStyle={{ backgroundColor: 'transparent' }}
-          />
-          <CheckBox
-            checked={genero === 'O'}
-            onPress={() => setGenero('O')}
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            title={'Outro'}
             textStyle={{ color: 'white' }}
             checkedColor='white'
             containerStyle={{ backgroundColor: 'transparent' }}

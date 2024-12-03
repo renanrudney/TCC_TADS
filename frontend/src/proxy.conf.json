@@ -1,7 +1,7 @@
 {
   "/api": {
     "pathRewrite": {"^/api": "" },
-    "target": "http://host.docker.internal:3000/",
+    "target": "http://localhost:3000/",
     "secure": false
   }
 }
