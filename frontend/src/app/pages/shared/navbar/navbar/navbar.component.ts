@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
 
   public activePath = '';
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn$;
@@ -24,6 +24,9 @@ export class NavbarComponent implements OnInit {
 
   onSelectPath(newPath: string) {
     this.activePath = newPath;
-    console.log(this.activePath)
+  }
+
+  onLogout() {
+    this.authService.logout()
   }
 }
