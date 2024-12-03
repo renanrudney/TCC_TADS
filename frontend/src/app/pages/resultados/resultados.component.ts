@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit, Type } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ResultadoProviderService } from '../../services/providers/resultado/resultado-provider.service';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-resultados',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './resultados.component.html',
   styleUrl: './resultados.component.css'
 })

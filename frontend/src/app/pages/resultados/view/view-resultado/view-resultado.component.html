@@ -1,1 +1,10 @@
-<p>view-resultado works!</p>
+<div *ngIf="tipo === 'hitpoint'; else acc_gyr">
+  <highcharts-chart *ngIf="loadHitpoint" [Highcharts]="Highcharts" [options]="hitpointChartOptions"></highcharts-chart>
+  Quantidade: {{resultado.qtd_toque}}
+  Intervalo Médio: {{resultado.intervalo_medio}}
+</div>
+
+<ng-template #acc_gyr>
+  <highcharts-chart *ngIf="loadAccelerometer" [Highcharts]="Highcharts" [options]="accelerometerChartOptions"></highcharts-chart>
+  <highcharts-chart *ngIf="loadGyroscope" [Highcharts]="Highcharts" [options]="gyroscopeChartOptions"></highcharts-chart>
+</ng-template>
