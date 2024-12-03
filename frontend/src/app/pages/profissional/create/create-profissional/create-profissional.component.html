@@ -1,0 +1,106 @@
+<div class="login-card">
+  <div class="card-title">
+    <h1>Cadastrar Profissional</h1>
+  </div>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <!-- Nome -->
+    <div>
+      <label for="name">Nome</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Digite seu nome"
+      />
+    </div>
+
+    <!-- Sobrenome -->
+    <div>
+      <label for="sobrenome">Sobrenome</label>
+      <input
+        id="sobrenome"
+        type="text"
+        formControlName="sobrenome"
+        placeholder="Digite seu sobrenome"
+      />
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="exemplo@email.com"
+      />
+    </div>
+
+    <!-- Data de Nascimento -->
+    <div>
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input
+        id="dataNascimento"
+        type="date"
+        formControlName="dataNascimento"
+      />
+    </div>
+
+    <!-- CPF -->
+    <div>
+      <label for="cpf">CPF</label>
+      <input
+        id="cpf"
+        type="text"
+        formControlName="cpf"
+        placeholder="123.456.789-00"
+      />
+    </div>
+
+    <!-- Registro Profissional -->
+    <div>
+      <label for="registroProficional">Registro Profissional</label>
+      <input
+        id="registroProficional"
+        type="text"
+        formControlName="registroProficional"
+        placeholder="Digite seu registro profissional"
+      />
+    </div>
+
+    <!-- Número do Registro -->
+    <div>
+      <label for="numeroRegistro">Número do Registro</label>
+      <input
+        id="numeroRegistro"
+        type="text"
+        formControlName="numeroRegistro"
+        placeholder="Digite o número do registro"
+      />
+    </div>
+
+    <!-- Especialidade -->
+    <div>
+      <label for="especialidade">Especialidade</label>
+      <input
+        id="especialidade"
+        type="text"
+        formControlName="especialidade"
+        placeholder="Digite sua especialidade"
+      />
+    </div>
+
+    <!-- Senha -->
+    <div>
+      <label for="password">Senha</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Digite sua senha"
+      />
+    </div>
+
+    <button type="submit" [disabled]="!signupForm.valid">Cadastrar</button>
+  </form>
+</div>
