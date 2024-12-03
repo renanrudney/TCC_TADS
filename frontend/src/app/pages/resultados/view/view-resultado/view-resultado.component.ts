@@ -10,18 +10,21 @@ import { ResultadoProviderService } from "../../../../services/providers/resulta
 })
 export class ViewResultadoComponent implements OnInit {
   resultadoId: any;
+  tipo: any;
   resultado: any;
 
   httpProvider = inject(ResultadoProviderService)
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.resultadoId = this.route.snapshot.params['resultadoId'];      
-    this.getResultadoById();
+    this.resultadoId = this.route.snapshot.params['resultadoId'];
+    this.tipo = this.route.snapshot.params['tipo']
+    this.getResultadoByIdTipo();
   }
 
-  getResultadoById() {       
-    this.httpProvider.getResultadoById(this.resultadoId).subscribe((data : any) => {  
+  getResultadoByIdTipo() {       
+    this.httpProvider.getResultadoByIdTipo(this.resultadoId, this.tipo).subscribe((data : any) => {
+      console.log(data)
       if (data != null && data.body != null) {
         var resultData = data.body;
         if (resultData) {

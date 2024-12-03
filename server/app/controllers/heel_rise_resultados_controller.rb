@@ -3,7 +3,7 @@ class HeelRiseResultadosController < ApplicationController
 
   # GET /heel_rise_resultados
   def index
-    resultados = HeelRiseResultado.where(usuario_id: @usuario_atual.id)
+    resultados = @usuario_atual.profissional? ? HeelRiseResultado.all : HeelRiseResultado.where(usuario_id: @usuario_atual.id)
 
     @pagy, @records = pagy(resultados)
     render json: { records: ActiveModel::Serializer::CollectionSerializer.new(@records, serializer: HeelRiseResultadoSerializer), meta: pagy_metadata(@pagy) }, status: :ok
@@ -42,7 +42,12 @@ class HeelRiseResultadosController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_heel_rise_resultado
-      @heel_rise_resultado = HeelRiseResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+      @heel_rise_resultado =
+        if @usuario_atual.profissional?
+          HeelRiseResultado.find_by!(id: params[:id])
+        else
+          HeelRiseResultado.find_by!(id: params[:id], usuario_id: @usuario_atual.id)
+        end
     end
 
     # Only allow a list of trusted parameters through.
