@@ -1,7 +1,7 @@
 class HitpointResultadoSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :id, :qtd_toque, :intervalo_medio, :realizado, :usuario_id, :hit_data, :created_at, :updated_at, :links
+  attributes :id, :qtd_toque, :intervalo_medio, :realizado, :usuario, :hit_data, :created_at, :updated_at, :links
 
   def links
     [

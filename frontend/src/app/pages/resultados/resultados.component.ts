@@ -31,14 +31,27 @@ export class ResultadosComponent implements OnInit {
       }
     },
     (error : any)=> {
-        if (error) {
-          if (error.status == 404) {
-            if(error.error && error.error.message){
-              this.resultadosList = [];
-            }
+      if (error) {
+        if (error.status == 404) {
+          if(error.error && error.error.message){
+            this.resultadosList = [];
           }
         }
-      });
+      }
+    });
+  }
+
+  public formatTipo(tipo: string) {
+    switch (tipo) {
+      case "hitpoint":
+        return 'Hit the point'
+      case "up_down_arm":
+        return 'Up Down Arm'
+      case "heel_rise":
+        return 'Heel Rise'
+      default:
+        return ''
+    }
   }
 }
 
