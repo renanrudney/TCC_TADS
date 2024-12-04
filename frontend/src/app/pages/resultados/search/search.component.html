@@ -1,0 +1,58 @@
+<form novalidate
+[formGroup]="form">
+<h3>Group Filter</h3>
+<div class="row">
+	<div class="col-md-3">
+		<input type="text"
+			formControlName="nome"
+		class="form-control"
+		placeholder="Nome"
+		/>
+	</div>
+	<div class="col-md-3">
+		<input type="text"
+			formControlName="sobrenome"
+		class="form-control"
+		placeholder="Sobrenome"
+		/>
+	</div>
+	<div class="col-md-3 col-sm-3">
+		<select class="form-control"
+			formControlName="sexo">
+			<option value="">Sexo</option>
+			<option value="M">Masculino</option>
+			<option value="F">Feminino</option>
+		</select>
+	</div>
+	<div class="col-md-3 col-sm-3">
+		<select class="form-control"
+			formControlName="nivelSintoma">
+			<option value="">Nível de sintoma</option>
+			<option value="0">0</option>
+			<option value="1">1</option>
+			<option value="1">2</option>
+			<option value="1">3</option>
+			<option value="1">4</option>
+			<option value="1">5</option>
+		</select>
+	</div>
+	<div class="col-md-3">
+		<input type="date"
+			formControlName="realizado"
+			class="form-control"
+			placeholder=""
+		/>
+		<p *ngIf="form.get('realizado')?.hasError('Datecompare')">Não pode ser maior que "Realizado até"</p>
+	</div>
+	<div class="col-md-3">
+		<input type="date"
+			formControlName="realizadoAte"
+			class="form-control"
+			placeholder=""
+		/>
+	</div>
+	<div class="col-md-3 col-sm-3">
+		<button class="btn btn-primary"
+		(click)="search(form.value)">Search</button>
+	</div>
+</div>
