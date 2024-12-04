@@ -1,0 +1,16 @@
+header {
+  background-color: #145a73;
+  padding-right: 100px;
+  padding-left: 100px;
+  a {
+    color: white;
+    span {
+      color: white;
+    }
+  }
+  .active {
+    background-color: white;
+    color: #145a73;
+    font-weight: bold;
+  }
+}
