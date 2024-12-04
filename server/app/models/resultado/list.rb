@@ -29,31 +29,43 @@ class Resultado::List
     end
   end
 
-  def self.call(usuario_id:, date:, type:)
+  def self.call(usuario_id:, date:, date_to:, type:, nivel:, sexo:, nome:, sobrenome:)
     format_date = date.present? ? date.in_time_zone("America/Sao_Paulo") : nil
+    format_date_to = date_to.present? ? date_to.in_time_zone("America/Sao_Paulo") : format_date
+    date_param = [format_date, format_date_to]
     @resultados = []
     if type.blank?
-      updownarm(usuario_id:, realizado: format_date)
-      heelrise(usuario_id:, realizado: format_date)
-      hitpoint(usuario_id:, realizado: format_date)
+      updownarm(query: build_query(entity: ::UpDownArmResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
+      heelrise(query: build_query(entity: ::HeelRiseResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
+      hitpoint(query: build_query(entity: ::HitpointResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
     else
       case type.to_sym
       when :up_down_arm
-        updownarm(usuario_id:, realizado: format_date)
+        updownarm(query: build_query(entity: ::UpDownArmResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
       when :heel_rise
-        heelrise(usuario_id:, realizado: format_date)
+        heelrise(query: build_query(entity: ::HeelRiseResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
       when :hitpoint
-        hitpoint(usuario_id:, realizado: format_date)
+        hitpoint(query: build_query(entity: ::HitpointResultado, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:))
       end
     end
 
     @resultados
   end
 
-  def self.hitpoint(usuario_id:, realizado:)
-    query = ::HitpointResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
+  def self.build_query(entity:, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:)
+    query = entity.where(realizado: realizado[0]&.beginning_of_day..realizado[1]&.end_of_day)
     query = query.where(usuario_id:) if usuario_id.present?
+    if (nivel.present? || sexo.present? || nome.present? || sobrenome.present?)
+      query = query.joins(usuario: :comum)
+      query = query.where("LOWER(usuario.nome) LIKE LOWER('%#{nome}%')") if nome.present?
+      query = query.where("LOWER(usuario.sobrenome) LIKE LOWER('%#{sobrenome}%')") if sobrenome.present?
+      query = query.where('LOWER("usu_comum"."genero") = LOWER(?)', sexo) if sexo.present?
+      query = query.where(usuario: { usu_comum: { nivel_sintoma: nivel }}) if nivel.present?
+    end
+    query
+  end
 
+  def self.hitpoint(query:)
     query.find_each do |hp|
       usuario = hp.usuario.attributes.merge(comum: hp.usuario&.comum)
       attributes = hp.attributes.merge(type: :hitpoint, usuario: usuario)
@@ -61,10 +73,7 @@ class Resultado::List
     end
   end
 
-  def self.updownarm(usuario_id:, realizado:)
-    query = ::UpDownArmResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
-    query = query.where(usuario_id:) if usuario_id.present?
-
+  def self.updownarm(query:)
     query.find_each do |ud|
       usuario = ud.usuario.attributes.merge(comum: ud.usuario&.comum)
       attributes = ud.attributes.merge(type: :up_down_arm, usuario: usuario)
@@ -73,10 +82,7 @@ class Resultado::List
     end
   end
 
-  def self.heelrise(usuario_id:, realizado:)
-    query = ::HeelRiseResultado.where(realizado: realizado&.beginning_of_day..realizado&.end_of_day)
-    query = query.where(usuario_id:) if usuario_id.present?
-
+  def self.heelrise(query:)
     query.find_each do |hr|
       usuario = hr.usuario.attributes.merge(comum: hr.usuario&.comum)
       attributes = hr.attributes.merge(type: :heel_rise, usuario: usuario)
