@@ -1,6 +1,6 @@
 class Resultado::List
   Item = Struct.new(
-    :id, :qtd_toque, :intervalo_medio, :realizado, :usuario_id, :created_at, :updated_at, :links, :type,
+    :id, :qtd_toque, :intervalo_medio, :realizado, :usuario_id, :usuario, :created_at, :updated_at, :links, :type,
     :qtd_accelerometers, :qtd_gyroscopes, keyword_init: true
   ) do
     def initialize(*)
@@ -55,7 +55,8 @@ class Resultado::List
     query = query.where(usuario_id:) if usuario_id.present?
 
     query.find_each do |hp|
-      attributes = hp.attributes.merge(type: :hitpoint)
+      usuario = hp.usuario.attributes.merge(comum: hp.usuario&.comum)
+      attributes = hp.attributes.merge(type: :hitpoint, usuario: usuario)
       @resultados << Item.new(attributes)
     end
   end
@@ -65,7 +66,8 @@ class Resultado::List
     query = query.where(usuario_id:) if usuario_id.present?
 
     query.find_each do |ud|
-      attributes = ud.attributes.merge(type: :up_down_arm)
+      usuario = ud.usuario.attributes.merge(comum: ud.usuario&.comum)
+      attributes = ud.attributes.merge(type: :up_down_arm, usuario: usuario)
       attributes = attributes.merge(qtd_accelerometers: ud.accelerometers.count, qtd_gyroscopes: ud.gyroscopes.count)
       @resultados << Item.new(attributes)
     end
@@ -76,7 +78,8 @@ class Resultado::List
     query = query.where(usuario_id:) if usuario_id.present?
 
     query.find_each do |hr|
-      attributes = hr.attributes.merge(type: :heel_rise)
+      usuario = hr.usuario.attributes.merge(comum: hr.usuario&.comum)
+      attributes = hr.attributes.merge(type: :heel_rise, usuario: usuario)
       attributes = attributes.merge(qtd_accelerometers: hr.accelerometers.count, qtd_gyroscopes: hr.gyroscopes.count)
       @resultados << Item.new(attributes)
     end

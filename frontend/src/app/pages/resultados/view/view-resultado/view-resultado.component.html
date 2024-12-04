@@ -1,8 +1,10 @@
 <div class="container-xl">
   <div *ngIf="tipo === 'hitpoint'; else acc_gyr">
-    <highcharts-chart *ngIf="loadHitpoint" [Highcharts]="Highcharts" [options]="hitpointChartOptions"></highcharts-chart>
-    Quantidade: {{resultado.qtd_toque}}
-    Intervalo Médio: {{resultado.intervalo_medio}}
+    <div *ngIf="loadHitpoint">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="hitpointChartOptions"></highcharts-chart>
+      <p>Quantidade: {{resultado.qtd_toque}}</p>
+      <p>Intervalo Médio: {{(resultado.intervalo_medio/1000)}} segundos</p>
+    </div>
   </div>
   
   <ng-template #acc_gyr>
