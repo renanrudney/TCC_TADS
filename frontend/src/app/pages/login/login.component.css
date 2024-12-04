@@ -7,20 +7,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(253, 101, 133, 1);
+  background-color: #145a73;
 
 }
 
 .login-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 10px 10px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   background-color: #ffffff;
   padding: 10px;
   border-radius: 10px;
   width: 40%;
+  height: 40%;
+}
 
+.login-card form {
+  margin: 50px;
 }
 
 .login-card input {
@@ -34,7 +40,7 @@
 }
 
 .login-card button {
-  background-color: #4796ff;
+  background-color: #145a73;
   color: #ffffff;
   font-size: 16px;
   outline: none;
@@ -43,7 +49,6 @@
   padding: 8px 15px;
   width: 100%;
 }
-
 
 .card-title h1 {
   font-size: 26px;
