@@ -52,7 +52,7 @@ class Resultado::List
     @resultados
   end
 
-  def self.build_query(entity:, usuario_id:, realizado: date_param, nivel:, sexo:, nome:, sobrenome:)
+  def self.build_query(entity:, usuario_id:, realizado:, nivel:, sexo:, nome:, sobrenome:)
     query = entity.where(realizado: realizado[0]&.beginning_of_day..realizado[1]&.end_of_day)
     query = query.where(usuario_id:) if usuario_id.present?
     if (nivel.present? || sexo.present? || nome.present? || sobrenome.present?)
