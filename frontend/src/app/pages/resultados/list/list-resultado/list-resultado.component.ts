@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@
 import { ResultadoService } from '../../../../services/resultado/resultado.service';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-list-resultado',
-  imports: [CommonModule, FilterPipe],
+  imports: [CommonModule, RouterModule, FilterPipe],
   templateUrl: './list-resultado.component.html',
   styleUrl: './list-resultado.component.css'
 })
@@ -25,13 +26,6 @@ export class ListResultadoComponent implements OnChanges {
   }
 
   filterResultadoList(filters: any): void {
-    // if (Object.keys(filters).length === 0)
-    //   return
-    
-    console.log('filtrando')
-    console.log(filters)
-    // if (filters)
-    // this.loadResultados()
     const filteredParams = {
       nome: filters.nome, sobrenome: filters.sobrenome, sexo: filters.sexo,
       nivelSintoma: filters.nivelSintoma,
@@ -39,6 +33,19 @@ export class ListResultadoComponent implements OnChanges {
     }
 
     this.loadResultados(filteredParams)
+  }
+
+  public formatTipo(tipo: string) {
+    switch (tipo) {
+      case "hitpoint":
+        return 'Hit the point'
+      case "up_down_arm":
+        return 'Up Down Arm'
+      case "heel_rise":
+        return 'Heel Rise'
+      default:
+        return ''
+    }
   }
 
   loadResultados(params?: {}): void {

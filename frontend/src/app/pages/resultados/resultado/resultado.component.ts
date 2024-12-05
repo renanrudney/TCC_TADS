@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ListResultadoComponent } from '../list/list-resultado/list-resultado.component';
 
 @Component({
-  selector: 'app-test',
+  selector: 'app-resultado',
   imports: [CommonModule, SearchComponent, ListResultadoComponent],
-  templateUrl: './test.component.html',
-  styleUrl: './test.component.css'
+  templateUrl: './resultado.component.html',
+  styleUrl: './resultado.component.css'
 })
-export class TestComponent {
+export class ResultadoComponent {
   searchText: string = '';
   filters: Object = {};
 

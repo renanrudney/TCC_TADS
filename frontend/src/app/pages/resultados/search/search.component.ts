@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
       let _toDate = (<FormGroup>control.parent).get("realizadoAte")?.value;
 
       if (_fromDate && _toDate) {
-        if (_fromDate >= _toDate) {
+        if (_fromDate > _toDate) {
           control.parent.get("realizado")?.setErrors({ Datecompare: true });
           control.parent.get("realizadoAte")?.setErrors({ Datecompare: true });
           return { Datecompare: true };
