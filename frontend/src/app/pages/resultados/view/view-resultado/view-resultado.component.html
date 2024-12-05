@@ -1,14 +1,33 @@
 <div class="container-xl">
   <div *ngIf="tipo === 'hitpoint'; else acc_gyr">
-    <div *ngIf="loadHitpoint">
+    <div *ngIf="loadHitpoint" class="row">
+      <h4>Teste Hit the Point {{resultado.id}}</h4>
+      <div class="row">
+        <span>Quantidade de hits: {{resultado.qtd_toque}}</span>
+        <span>Intervalo Médio: {{(resultado.intervalo_medio/1000)?.toFixed(4)}} segundos</span>
+      </div>
+      <div class="row">
+        <span>Paciente: {{resultado.usuario?.nome}} {{resultado.usuario?.sobrenome}}</span>
+        <span>Idade: {{formatIdade(resultado.usuario?.nascimento)}}</span>
+        <span>Sexo: {{resultado.usuario?.genero}}</span>
+        <span>Nível de sintoma: {{resultado.usuario?.nivel_sintoma}}</span>
+      </div>
       <highcharts-chart [Highcharts]="Highcharts" [options]="hitpointChartOptions"></highcharts-chart>
-      <p>Quantidade: {{resultado.qtd_toque}}</p>
-      <p>Intervalo Médio: {{(resultado.intervalo_medio/1000)}} segundos</p>
+      <highcharts-chart [Highcharts]="Highcharts" [options]="hitpointChartVariationOptions"></highcharts-chart>
     </div>
   </div>
   
   <ng-template #acc_gyr>
-    <highcharts-chart *ngIf="loadAccelerometer" [Highcharts]="Highcharts" [options]="accelerometerChartOptions"></highcharts-chart>
-    <highcharts-chart *ngIf="loadGyroscope" [Highcharts]="Highcharts" [options]="gyroscopeChartOptions"></highcharts-chart>
+    <div *ngIf="loadAccelerometer && loadGyroscope" class="row">
+      <h4>Teste {{resultado.tipo === 'up_down_arm' ? 'Up Down Arm' : 'Heel Rise'}} {{resultado.id}}</h4>
+      <div class="row">
+        <span>Paciente: {{resultado.usuario?.nome}} {{resultado.usuario?.sobrenome}}</span>
+        <span>Idade: {{formatIdade(resultado.usuario?.nascimento)}}</span>
+        <span>Sexo: {{resultado.usuario?.genero}}</span>
+        <span>Nível de sintoma: {{resultado.usuario?.nivel_sintoma}}</span>
+      </div>
+      <highcharts-chart [Highcharts]="Highcharts" [options]="accelerometerChartOptions"></highcharts-chart>
+      <highcharts-chart [Highcharts]="Highcharts" [options]="gyroscopeChartOptions"></highcharts-chart>
+    </div>
   </ng-template>
 </div>

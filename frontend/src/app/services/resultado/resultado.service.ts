@@ -12,10 +12,11 @@ export class ResultadoService {
 
   constructor(private provider: ResultadoProviderService) { }
 
-  fetchResultados({ nome, sobrenome, sexo, nivelSintoma, data, dataAte }: any): Observable<any> {
+  fetchResultados({ nome, sobrenome, sexo, nivelSintoma, data, dataAte, tipo }: any): Observable<any> {
     const params = new HttpParams()
       .set('nome', nome ? nome.toString() : '').set('sobrenome', sobrenome? sobrenome.toString(): '').set('sexo', sexo? sexo.toString() : '')
       .set('nivel', nivelSintoma? nivelSintoma.toString() : '').set('date', data? data.toString() : '').set('date_to', dataAte? dataAte.toString() : '')
+      .set('type', tipo? tipo.toString() : '')
     return this.provider.listResultados(params);
   }
 }

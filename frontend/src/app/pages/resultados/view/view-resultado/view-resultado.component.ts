@@ -16,13 +16,16 @@ export class ViewResultadoComponent implements OnInit {
   accelerometerChartOptions: Highcharts.Options = {}
   gyroscopeChartOptions: Highcharts.Options = {}
   hitpointChartOptions: Highcharts.Options = {}
+  hitpointChartVariationOptions: Highcharts.Options = {}
+
   loadAccelerometer = false
   loadGyroscope = false
   loadHitpoint = false
-  gyroscopes: any
+  loadHitpointVariation = false
+
   resultadoId: any;
-  tipo: any;
   resultado: any;
+  tipo: any;
 
   httpProvider = inject(ResultadoProviderService)
   constructor(private route: ActivatedRoute) {}
@@ -43,6 +46,7 @@ export class ViewResultadoComponent implements OnInit {
 
           if (this.tipo === 'hitpoint') {
             this.buildHitpointChartData()
+            this.buildHitpointChartVariation()
           } else {
             this.buildAccelerometerChartData()
             this.buildGyroscopeChartData()
@@ -56,12 +60,14 @@ export class ViewResultadoComponent implements OnInit {
   buildHitpointChartData() {
     this.hitpointChartOptions =
     {
-      title: { text: 'Toque/Hit' },
+      title: { text: 'Toque/Hit ao longo do tempo' },
+      xAxis: { title: { text: 'Timestamp' } },
+      yAxis: { title: { text: 'Quantidade de hits'} },
       series : [
         {
           data: this.resultado.hit_data.map((h: any) => [parseFloat(h.timestamp), h.hit_number + 1]),
           type: 'line',
-          name: 'hit'
+          name: 'Quantidade de hits'
         },
       ]
     }
@@ -69,10 +75,34 @@ export class ViewResultadoComponent implements OnInit {
     this.loadHitpoint = true
   }
 
+  buildHitpointChartVariation() {
+      this.hitpointChartVariationOptions =
+      {
+        title: { text: 'Variação entre hits' },
+        xAxis: { title: { text: 'Quantidade de hits' } },
+        yAxis: { title: { text: 'Segundos'} },
+        series : [
+          {
+            data: this.resultado.hit_data.map((h: any, i: any, arr: any) => {
+              if (i === 0)
+                return
+              return [h.hit_number + 1, h.timestamp - arr[i - 1].timestamp]
+            }).filter((n: any) => n),
+            type: 'line',
+            name: 'Diferença do hit anterior (em segundos)'
+          },
+        ]
+      }
+      console.log(this.hitpointChartVariationOptions)
+      this.loadHitpointVariation = true
+  }
+
   buildAccelerometerChartData() {
     this.accelerometerChartOptions =
     {
       title: { text: 'Acelerômetro' },
+      xAxis: { title: { text: 'Timestamp' } },
+      yAxis: { title: { text: 'Amplitude'} },
       series: [
         {
           data: this.resultado.accelerometers.map((a: any) => [parseFloat(a.timestamp), parseFloat(a.x_axis)]),
@@ -97,6 +127,8 @@ export class ViewResultadoComponent implements OnInit {
   buildGyroscopeChartData() {
     this.gyroscopeChartOptions = {
       title: { text: 'Giroscópio' },
+      xAxis: { title: { text: 'Timestamp' } },
+      yAxis: { title: { text: 'Amplitude'} },
       series: [
         {
           data: this.resultado.gyroscopes.map((g: any) => [parseFloat(g.timestamp), parseFloat(g.x_axis)]),
@@ -116,5 +148,14 @@ export class ViewResultadoComponent implements OnInit {
       ]
     }
     this.loadGyroscope = true
+  }
+
+  formatIdade(nascimento: any) {
+    if (!nascimento)
+      return ''
+    const bday = new Date(nascimento)
+    const distance = (new Date()).getTime() - bday.getTime()
+    const days = Math.floor(distance/(1000 * 60 * 60 * 24))
+    return Number((days/365).toFixed(0))
   }
 }

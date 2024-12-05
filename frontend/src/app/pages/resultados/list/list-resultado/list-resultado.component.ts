@@ -28,7 +28,7 @@ export class ListResultadoComponent implements OnChanges {
   filterResultadoList(filters: any): void {
     const filteredParams = {
       nome: filters.nome, sobrenome: filters.sobrenome, sexo: filters.sexo,
-      nivelSintoma: filters.nivelSintoma,
+      nivelSintoma: filters.nivelSintoma, tipo: filters.tipo,
       data: filters.realizado, dataAte: filters.realizadoAte,
     }
 
@@ -38,7 +38,7 @@ export class ListResultadoComponent implements OnChanges {
   public formatTipo(tipo: string) {
     switch (tipo) {
       case "hitpoint":
-        return 'Hit the point'
+        return 'Hit the Point'
       case "up_down_arm":
         return 'Up Down Arm'
       case "heel_rise":
