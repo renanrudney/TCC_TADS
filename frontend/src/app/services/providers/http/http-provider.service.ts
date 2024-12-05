@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,17 +20,18 @@ export class HttpProviderService {
     return JSON.parse(localStorage.getItem('authUser') as string).token
   }
 
-  get(url: string): Observable<any> {
+  get(url: string, params?: HttpParams): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': this.token
       }),
+      params: params,
       observe: "response" as 'body'
     };
     return this.httpClient.get(
       url,
-      httpOptions
+      httpOptions,
     )
     .pipe(
         map((response: any) => this.ReturnResponseData(response)),

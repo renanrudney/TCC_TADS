@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { baseUrl } from '../../../config/api';
 import { HttpProviderService } from '../http/http-provider.service';
+import { HttpParams } from '@angular/common/http';
 
 const apiUrl = {
   resultados: baseUrl + "/resultados",
@@ -26,8 +27,8 @@ export class ResultadoProviderService {
   apiService = inject(HttpProviderService)
   constructor() { }
 
-  public listResultados(): Observable<any> {
-    return this.apiService.get(apiUrl.resultados)
+  public listResultados(params?: HttpParams): Observable<any> {
+    return this.apiService.get(apiUrl.resultados, params)
   }
 
   public getResultadoByIdTipo(id: any, tipo: any): Observable<any> {

@@ -1,0 +1,20 @@
+<div class="container-xl">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1><b>Lista de resultados</b></h1>
+            <hr/>
+          </div>
+        </div>
+        <div class="row">
+          <app-search (groupFilters)="filters = $event"></app-search>
+        </div>
+      </div>
+      <app-list-resultado [groupFilters]="filters"
+        [searchByKeyword]="searchText">
+      </app-list-resultado>
+    </div>
+  </div>
+</div>
