@@ -27,7 +27,8 @@ export class SearchComponent implements OnInit {
       sexo: new FormControl(''),
       nivelSintoma: new FormControl(''),
       realizado: new FormControl('', [this.realizadoValidator]),
-      realizadoAte: new FormControl('', [this.realizadoValidator])
+      realizadoAte: new FormControl('', [this.realizadoValidator]),
+      tipo: new FormControl('')
     });
   }
 
