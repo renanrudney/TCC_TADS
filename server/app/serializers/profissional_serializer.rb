@@ -1,7 +1,7 @@
 class ProfissionalSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :cpf, :login, :tipo, :nome, :sobrenome, :nascimento, :tipo_registro, :registro, :especialidade, :links
+  attributes :id, :cpf, :login, :tipo, :nome, :sobrenome, :nascimento, :tipo_registro, :registro, :especialidade, :links
 
   def tipo_registro = object.profissional.tipo_registro
 
