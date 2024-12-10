@@ -26,9 +26,6 @@
           <tr *ngFor="let profissional of profissionaisList" class="center-align">
             <td>{{ profissional.nome }} {{ profissional.cpf }}</td>
             <td>
-              <a href="#" [routerLink]="'/edit-profissional/' + profissional.id" class="btn edit">
-                <i class="fas fa-edit"></i> Editar
-              </a>
               <button (click)="deleteProfissional(profissional.id)" class="btn delete">
                 <i class="fas fa-trash-alt"></i> Excluir
               </button>
