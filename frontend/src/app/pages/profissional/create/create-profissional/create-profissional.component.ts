@@ -14,6 +14,9 @@ import { AuthService } from '../../../../auth/auth.service';
 export class CreateProfissionalComponent {
   signupForm!: FormGroup;
 
+  successMessage: string | null = null; // Para mensagem de sucesso
+  errorMessage: string | null = null; // Para mensagem de erro
+
   authService = inject(AuthService);
   httpProvider = inject(ProfissionalProviderService);
   router = inject(Router);
@@ -43,14 +46,17 @@ export class CreateProfissionalComponent {
   onSubmit() {
     if (this.signupForm.valid) {
       const profissionalData = this.signupForm.value;
+
       this.httpProvider.createProfissional(profissionalData).subscribe(
         (response: any) => {
-          console.log('Profissional cadastrado com sucesso:', response);
-          this.router.navigate(['/profissionais']);
+          this.successMessage = 'Profissional cadastrado com sucesso!';
+          this.errorMessage = null; // Limpa a mensagem de erro, se existir
+          this.signupForm.reset(); // Limpa o formulário
         },
         (error: any) => {
-          console.error('Erro ao cadastrar profissional:', error);
-          console.log('Detalhes do erro:', error.error); // Exibe detalhes do erro
+          this.errorMessage = 'Erro ao cadastrar profissional. Tente novamente.';
+          this.successMessage = null; // Limpa a mensagem de sucesso, se existir
+          console.error('Detalhes do erro:', error.error);
         }
       );
     } else {

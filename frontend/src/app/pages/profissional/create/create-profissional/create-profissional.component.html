@@ -2,6 +2,17 @@
   <div class="card-title">
     <h1>Cadastrar Profissional</h1>
   </div>
+
+  <!-- Mensagem de Sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Mensagem de Erro -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <!-- Nome -->
     <div>
