@@ -212,6 +212,16 @@ const SignUpForm = () => {
             checkedColor='white'
             containerStyle={{ backgroundColor: 'transparent' }}
           />
+          <CheckBox
+            checked={nivel === 5}
+            onPress={() => setNivel(5)}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            title={'5'}
+            textStyle={{ color: 'white' }}
+            checkedColor='white'
+            containerStyle={{ backgroundColor: 'transparent' }}
+          />
         </View>
       </View>
       <View>
