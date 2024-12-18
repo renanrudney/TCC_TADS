@@ -33,13 +33,12 @@ export class CreateProfissionalComponent {
       nome: ['', Validators.required],
       sobrenome: ['', Validators.required],
       login: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
       nascimento: ['', Validators.required],
       cpf: ['', Validators.required],
       tipo_registro: ['', Validators.required],
       registro: ['', Validators.required],
       especialidade: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
