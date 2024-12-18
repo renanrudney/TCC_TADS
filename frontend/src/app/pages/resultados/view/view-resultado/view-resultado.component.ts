@@ -61,11 +61,14 @@ export class ViewResultadoComponent implements OnInit {
     this.hitpointChartOptions =
     {
       title: { text: 'Toque/Hit ao longo do tempo' },
-      xAxis: { title: { text: 'Timestamp' } },
+      time : {
+        timezone: 'America/Sao_Paulo'
+      },
+      xAxis: { title: { text: 'Hora' }, type: 'datetime' },
       yAxis: { title: { text: 'Quantidade de hits'} },
       series : [
         {
-          data: this.resultado.hit_data.map((h: any) => [parseFloat(h.timestamp), h.hit_number + 1]),
+          data: this.resultado.hit_data.map((h: any) => [(h.timestamp * 1000), h.hit_number + 1]),
           type: 'line',
           name: 'Quantidade de hits'
         },
@@ -85,7 +88,7 @@ export class ViewResultadoComponent implements OnInit {
           {
             data: this.resultado.hit_data.map((h: any, i: any, arr: any) => {
               if (i === 0)
-                return
+                return [ h.hit_number + 1, 0]
               return [h.hit_number + 1, h.timestamp - arr[i - 1].timestamp]
             }).filter((n: any) => n),
             type: 'line',
@@ -101,21 +104,24 @@ export class ViewResultadoComponent implements OnInit {
     this.accelerometerChartOptions =
     {
       title: { text: 'Acelerômetro' },
-      xAxis: { title: { text: 'Timestamp' } },
+      time : {
+        timezone: 'America/Sao_Paulo'
+      },
+      xAxis: { title: { text: 'Hora' }, type: 'datetime' },
       yAxis: { title: { text: 'Amplitude'} },
       series: [
         {
-          data: this.resultado.accelerometers.map((a: any) => [parseFloat(a.timestamp), parseFloat(a.x_axis)]),
+          data: this.resultado.accelerometers.map((a: any) => [(a.timestamp * 1000), parseFloat(a.x_axis)]),
           type: 'line',
           name: 'x_axis'
         },
         {
-          data: this.resultado.accelerometers.map((a: any) => [parseFloat(a.timestamp), parseFloat(a.y_axis)]),
+          data: this.resultado.accelerometers.map((a: any) => [(a.timestamp * 1000), parseFloat(a.y_axis)]),
           type: 'line',
           name: 'y_axis'
         },
         {
-          data: this.resultado.accelerometers.map((a: any) => [parseFloat(a.timestamp), parseFloat(a.z_axis)]),
+          data: this.resultado.accelerometers.map((a: any) => [(a.timestamp * 1000), parseFloat(a.z_axis)]),
           type: 'line',
           name: 'z_axis'
         },
@@ -127,21 +133,24 @@ export class ViewResultadoComponent implements OnInit {
   buildGyroscopeChartData() {
     this.gyroscopeChartOptions = {
       title: { text: 'Giroscópio' },
-      xAxis: { title: { text: 'Timestamp' } },
+      time : {
+        timezone: 'America/Sao_Paulo'
+      },
+      xAxis: { title: { text: 'Hora' }, type: 'datetime' },
       yAxis: { title: { text: 'Amplitude'} },
       series: [
         {
-          data: this.resultado.gyroscopes.map((g: any) => [parseFloat(g.timestamp), parseFloat(g.x_axis)]),
+          data: this.resultado.gyroscopes.map((g: any) => [(g.timestamp * 1000), parseFloat(g.x_axis)]),
           type: 'line',
           name: 'x_axis'
         },
         {
-          data: this.resultado.gyroscopes.map((g: any) => [parseFloat(g.timestamp), parseFloat(g.y_axis)]),
+          data: this.resultado.gyroscopes.map((g: any) => [(g.timestamp * 1000), parseFloat(g.y_axis)]),
           type: 'line',
           name: 'y_axis'
         },
         {
-          data: this.resultado.gyroscopes.map((g: any) => [parseFloat(g.timestamp), parseFloat(g.z_axis)]),
+          data: this.resultado.gyroscopes.map((g: any) => [(g.timestamp * 1000), parseFloat(g.z_axis)]),
           type: 'line',
           name: 'z_axis'
         },
