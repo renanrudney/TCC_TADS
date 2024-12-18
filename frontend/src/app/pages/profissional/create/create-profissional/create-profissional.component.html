@@ -2,14 +2,25 @@
   <div class="card-title">
     <h1>Cadastrar Profissional</h1>
   </div>
+
+  <!-- Mensagem de Sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Mensagem de Erro -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <!-- Nome -->
     <div>
-      <label for="name">Nome</label>
+      <label for="nome">Nome</label>
       <input
-        id="name"
+        id="nome"
         type="text"
-        formControlName="name"
+        formControlName="nome"
         placeholder="Digite seu nome"
       />
     </div>
@@ -25,24 +36,24 @@
       />
     </div>
 
-    <!-- Email -->
+    <!-- Login -->
     <div>
-      <label for="email">Email</label>
+      <label for="login">Login</label>
       <input
-        id="email"
-        type="email"
-        formControlName="email"
-        placeholder="exemplo@email.com"
+        id="login"
+        type="text"
+        formControlName="login"
+        placeholder="Digite seu login"
       />
     </div>
 
     <!-- Data de Nascimento -->
     <div>
-      <label for="dataNascimento">Data de Nascimento</label>
+      <label for="nascimento">Data de Nascimento</label>
       <input
-        id="dataNascimento"
+        id="nascimento"
         type="date"
-        formControlName="dataNascimento"
+        formControlName="nascimento"
       />
     </div>
 
@@ -59,22 +70,22 @@
 
     <!-- Registro Profissional -->
     <div>
-      <label for="registroProficional">Registro Profissional</label>
+      <label for="tipo_registro">Registro Profissional</label>
       <input
-        id="registroProficional"
+        id="tipo_registro"
         type="text"
-        formControlName="registroProficional"
+        formControlName="tipo_registro"
         placeholder="Digite seu registro profissional"
       />
     </div>
 
     <!-- Número do Registro -->
     <div>
-      <label for="numeroRegistro">Número do Registro</label>
+      <label for="registro">Número do Registro</label>
       <input
-        id="numeroRegistro"
+        id="registro"
         type="text"
-        formControlName="numeroRegistro"
+        formControlName="registro"
         placeholder="Digite o número do registro"
       />
     </div>
@@ -92,11 +103,11 @@
 
     <!-- Senha -->
     <div>
-      <label for="password">Senha</label>
+      <label for="senha">Senha</label>
       <input
-        id="password"
+        id="senha"
         type="password"
-        formControlName="password"
+        formControlName="senha"
         placeholder="Digite sua senha"
       />
     </div>

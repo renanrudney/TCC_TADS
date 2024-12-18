@@ -11,47 +11,49 @@ import { CommonModule } from '@angular/common';
   styleUrl: './profissional.component.css'
 })
 export class ProfissionalComponent implements OnInit {
-deleteProfissional(arg0: any) {
-throw new Error('Method not implemented.');
-}
-
   authService = inject(AuthService);
   router = inject(Router);
-  httpProvider = inject(ProfissionalProviderService)
+  httpProvider = inject(ProfissionalProviderService);
 
-  profissionaisList: any = []
+  profissionaisList: any = [];
 
   ngOnInit(): void {
     this.listProfissionais();
   }
 
-  public logout(){
+  public logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  public criarProfissional() {
-    throw new Error('Method not implemented.');
-    }
-
   async listProfissionais() {
-    this.httpProvider.listProfissionais().subscribe((data : any) => {
-      if (data != null && data.records != null) {
-        var resultData = data.records;
-        if (resultData) {
-          console.log(resultData)
-          this.profissionaisList = resultData;
+    this.httpProvider.listProfissionais().subscribe(
+      (data: any) => {
+        if (data != null && data.records != null) {
+          this.profissionaisList = data.records;
         }
+      },
+      (error: any) => {
+        console.error('Erro ao listar profissionais:', error);
+        this.profissionaisList = [];
       }
-    },
-    (error : any)=> {
-        if (error) {
-          if (error.status == 404) {
-            if(error.error && error.error.message){
-              this.profissionaisList = [];
-            }
-          }
+    );
+  }
+
+  public deleteProfissional(id: number): void {
+    if (confirm('Você tem certeza que deseja excluir este profissional?')) {
+      this.httpProvider.deleteProfissional(id).subscribe(
+        () => {
+          // Remove o profissional da lista
+          this.profissionaisList = this.profissionaisList.filter((profissional: any) => profissional.id !== id);
+          console.log('Profissional excluído com sucesso!');
+        },
+        (error: any) => {
+          console.error('Erro ao excluir o profissional:', error);
+          alert('Não foi possível excluir o profissional. Tente novamente mais tarde.');
         }
-      });
+      );
+    }
   }
 }
+
